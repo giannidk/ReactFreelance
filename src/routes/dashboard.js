@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
+import { PageHeader } from 'react-bootstrap';
 
 class Dashboard extends Component {
     render() {
         return (
-            <h1>Dashboard....</h1>
+            <PageHeader>Dashboard....</PageHeader>
         );
     }
 }

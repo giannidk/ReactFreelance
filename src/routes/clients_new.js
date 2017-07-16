@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { PageHeader } from 'react-bootstrap';
 
-class RegistrationsList extends Component {
+class ClientsNew extends Component {
     render() {
         return (
-            <PageHeader>Registrations List ....</PageHeader>
+            <PageHeader>New CLient ......</PageHeader>
         );
     }
 }
 
-export default RegistrationsList;
+export default ClientsNew;
