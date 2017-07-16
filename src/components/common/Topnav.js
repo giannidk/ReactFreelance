@@ -1,24 +1,24 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+//import { Link } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
 import { 
   Navbar, 
   Nav, 
   NavItem, 
-  NavDropdown, 
-  MenuItem,
-  FormGroup,
-  FormControl,
-  Button
+  //NavDropdown, 
+  //MenuItem,
+  //FormGroup,
+  //FormControl,
+  //Button
  } from 'react-bootstrap';
 
-class NavigationTop extends Component{
+class Topnav extends Component{
     render() {
         return (
             <Navbar inverse collapseOnSelect fixedTop>
               <Navbar.Header>
                 <Navbar.Brand>
-                  <a href="#">React Freelance</a>
+                  <a href="/">React Freelance</a>
                 </Navbar.Brand>
                 <Navbar.Toggle />
               </Navbar.Header>
@@ -77,4 +77,4 @@ class NavigationTop extends Component{
     }
 }
 
-export default NavigationTop;
+export { Topnav };

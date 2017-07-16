@@ -1,9 +1,10 @@
 import { combineReducers } from 'redux';
+import { reducer as formReducer } from 'redux-form';
 import ClientsReducer from './reducer_clients';
 
 const rootReducer = combineReducers({
-    state: (state = {}) => state,
-    clients: ClientsReducer
+    clients: ClientsReducer,
+    form: formReducer
 })
 
 export default rootReducer;

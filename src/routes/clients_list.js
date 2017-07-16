@@ -4,10 +4,15 @@ import { PageHeader, Table, Button } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { connect } from 'react-redux';
 import { fetchClients } from '../actions';
+import { Spinner } from '../components/common';
 
 class ClientsList extends Component {
+   
+
     componentWillMount() {
-        this.props.fetchClients();
+        this.props.fetchClients(() => {
+            //this.setState({ loading: false});
+        });
     }
 
     renderList() {
@@ -24,7 +29,13 @@ class ClientsList extends Component {
         });
     }
 
-    render() {
+    render() {   
+        const { clients } = this.props;
+        
+        if( !clients ) {
+            return <Spinner />;
+        }
+
         return (
             <div>
             <PageHeader>Clients List</PageHeader>
@@ -41,7 +52,7 @@ class ClientsList extends Component {
                 {this.renderList()}                              
                 </tbody>
             </Table>
-            <LinkContainer to="/clients/new" className="pull-right">
+            <LinkContainer to="/clients/add" className="pull-right">
                 <Button bsStyle="primary">Add CLient</Button>
             </LinkContainer>
             </div>
@@ -49,8 +60,8 @@ class ClientsList extends Component {
     }
 }
 
-function mapStateToProps(state) {
-    return { clients: state.clients };
+function mapStateToProps({ clients }) {
+    return { clients: clients.list };
 }
 
 export default connect(mapStateToProps, { fetchClients })(ClientsList);

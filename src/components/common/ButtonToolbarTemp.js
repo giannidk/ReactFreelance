@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { ButtonToolbar, Button } from 'react-bootstrap';
 
-class ButtoonToolbarTemp extends Component {
+class ButtonToolbarTemp extends Component {
   render() {
     return (
       <div>       
@@ -34,4 +34,4 @@ class ButtoonToolbarTemp extends Component {
   }
 }
 
-export default ButtoonToolbarTemp;
+export { ButtonToolbarTemp };

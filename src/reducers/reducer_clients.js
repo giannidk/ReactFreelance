@@ -1,5 +1,6 @@
 import { 
-    FETCH_CLIENTS
+    FETCH_CLIENTS,
+    ADD_CLIENT
 } from '../actions/types';
 
 const INITIAL_STATE = {};
@@ -7,7 +8,9 @@ const INITIAL_STATE = {};
 export default function (state = INITIAL_STATE, action) {
     switch(action.type){
         case FETCH_CLIENTS:
-            return action.payload;        
+            return { ...state, list: action.payload};  
+        case ADD_CLIENT:
+            return action.payload;      
         default: 
             return state;
     }
