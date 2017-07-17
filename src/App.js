@@ -17,6 +17,7 @@ import ClientsList from './routes/clients_list';
 import ClientsAdd from './routes/clients_add';
 import ProjectsList from './routes/projects_list';
 import RegistrationsList from './routes/registrations_list';
+import ClientsDetails from './routes/clients_details';
 
 
 class App extends Component {
@@ -30,11 +31,9 @@ class App extends Component {
           <Grid >
              {/* <ButtonToolbarTemp /> */} 
           <Switch>
-            {/* <Route path="/clients/new" component={ClientsNew} />
-            <Route path="/client/:id" component={ClientShow} />
-             */}
             <Route path="/dashboard" component={Dashboard} />
             <Route path="/clients/add" component={ClientsAdd} />
+            <Route path="/clients/:key" component={ClientsDetails} />
             <Route path="/clients" component={ClientsList} />
             <Route path="/projects" component={ProjectsList} />
             <Route path="/registrations" component={RegistrationsList} />

@@ -9,7 +9,7 @@ class ClientsAdd extends Component {
 
     renderField(field) {
         const { meta: { touched, error } } = field;
-        const className = `form-group ${touched && error ? 'has-danger' : ''}`;
+        const className = `form-group ${touched && error ? 'has-error' : ''}`;
         return (
             <div className={className}>
                 <label>{field.label}</label>
@@ -18,7 +18,7 @@ class ClientsAdd extends Component {
                     className="form-control"
                     {...field.input}
                 />
-                <p className="text-help">{touched ? error : ''}</p>
+                <p className="control-label">{touched ? error : ''}</p>
             </div>
         );
     }
@@ -55,10 +55,12 @@ class ClientsAdd extends Component {
                         name="contactPhone"
                         component={this.renderField}
                     />
-                    <button type="submit" className="btn btn-primary">
-                        Submit
-                    </button>
-                    <Link to="/clients" className="btn btn-danger" style={{marginLeft: 5}}>Cancel</Link>
+                    <div className="pull-right">
+                        <button type="submit" className="btn btn-primary">
+                            Submit
+                        </button>
+                        <Link to="/clients" className="btn btn-danger" style={{marginLeft: 5}}>Cancel</Link>
+                    </div>
                 </form>
             </div>
         );
