@@ -1,20 +1,29 @@
-import database from '../firebase';
+import {
+	database,
+	baseRoot
+} from '../firebase';
 import {
 	FETCH_CLIENTS,
 	FETCH_CLIENTS_SUCCESS,
 	FETCH_CLIENTS_FAIL,
 	ADD_CLIENT,
 	CLIENT_DELETE,
-    CLIENT_DETAILS
+    CLIENT_DETAILS,
+    CLIENT_DETAILS_SUCCESS,
+    CLIENT_DETAILS_FAIL
 } from './types';
+
+const clientsRoot= `${baseRoot}/clients`;
+const clientsProjectsRoot = `${baseRoot}/clientsProjects`;
+
 
 export function fetchClients() {
 	return (dispatch) => {
 		dispatch({
 			type: FETCH_CLIENTS
 		});
-		database.ref('/clients')
-			.orderByValue()
+		database.ref(clientsRoot)
+			.orderByChild("contactPerson")
 			.once('value')
 			.then(
 				snapshot => {
@@ -35,7 +44,7 @@ export function fetchClients() {
 
 export function addClient(values, callbackFunction) {
 	return (dispatch) => {
-		database.ref('/clients')
+		database.ref(clientsRoot)
 			.push(values)
 			.then(() => {
 				dispatch({
@@ -47,31 +56,9 @@ export function addClient(values, callbackFunction) {
 	};
 }
 
-export function clientDetails(key) {
-	return (dispatch) => {
-		database.ref(`/clients/${key}`)
-			.once('value')
-			.then(                
-				snapshot => {
-					//console.log(snapshot.val());
-					dispatch({
-						type: CLIENT_DETAILS,
-						key: key,
-						payload: snapshot.val()
-					});
-                },
-                error => {
-                    console.log('Error fetching clients data.....');
-                }
-			)
-
-	};
-};
-
-
 export function clientDelete(id, callbackFunction) {
     return (dispatch) => {
-         database.ref(`/clients/${id}`)
+         database.ref(`${clientsRoot}/${id}`)
             .remove()
             .then(() => {
 				dispatch({ 
@@ -82,3 +69,42 @@ export function clientDelete(id, callbackFunction) {
         }); 
     };
 } 
+
+export function clientDetails(key) {
+	return (dispatch) => {
+	dispatch({
+			type: CLIENT_DETAILS
+		});	
+		// Fetching client's details
+		database.ref(clientsRoot).child(key)
+			.once('value', 
+			// success
+			snap => 
+			{
+				// Creating new container Objct
+				let clientDetails = {...snap.val(), projects: {} };				
+
+				 // Fetching all Client's Projects
+				database.ref(clientsProjectsRoot).child(key)				
+					.once('value')
+					.then( snap => {
+						clientDetails = { ...clientDetails, projects: snap.val()}
+						dispatch({
+							type: CLIENT_DETAILS_SUCCESS,
+							key: key,
+							payload: clientDetails
+						}); 
+					});
+				   
+			},
+			// error
+			error => {
+				  dispatch({
+					type: CLIENT_DETAILS_FAIL,
+					error: 'There has been an error retieving the project!'
+				})  
+			}
+		);
+
+	};
+};

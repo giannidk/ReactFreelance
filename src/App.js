@@ -18,6 +18,7 @@ import ClientsAdd from './routes/clients_add';
 import ProjectsList from './routes/projects_list';
 import RegistrationsList from './routes/registrations_list';
 import ClientsDetails from './routes/clients_details';
+import ProjectsDetails from './routes/projects_details';
 
 
 class App extends Component {
@@ -35,6 +36,7 @@ class App extends Component {
             <Route path="/clients/add" component={ClientsAdd} />
             <Route path="/clients/:key" component={ClientsDetails} />
             <Route path="/clients" component={ClientsList} />
+            <Route path="/projects/:key" component={ProjectsDetails} />
             <Route path="/projects" component={ProjectsList} />
             <Route path="/registrations" component={RegistrationsList} />
             <Route path="/" component={Dashboard} />

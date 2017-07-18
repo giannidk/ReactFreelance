@@ -11,4 +11,5 @@ import firebase from 'firebase';
   firebase.initializeApp(config);
 
 const database = firebase.database();
-export default database;
+const baseRoot = '/users/3905';
+export {database, baseRoot};

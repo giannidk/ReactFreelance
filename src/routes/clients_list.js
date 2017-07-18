@@ -15,8 +15,8 @@ class ClientsList extends Component {
 
     renderList() {
         const { clients } = this.props;
-        console.log('PROPSSSS', this.props);        
-        return _.map(clients, (client, key) => {
+        console.log(clients);
+            return _.map(clients, (client, key) => {
             return(
                 <tr key={key}>
                     <td><Link to={`/clients/${key}`}>{client.clientName}</Link></td>
@@ -36,7 +36,7 @@ class ClientsList extends Component {
         if( error ) {
             return (
                 <div>
-                    <PageHeader>Clients List</PageHeader>
+                    <PageHeader>Clients</PageHeader>
                     <Alert bsStyle="danger">
                         <p>{error}</p>           
                     </Alert>
@@ -68,7 +68,6 @@ class ClientsList extends Component {
 }
 
 function mapStateToProps({ clients }) {
-    console.log(clients);
     return { 
         loading: clients.loading,
         error: clients.error,

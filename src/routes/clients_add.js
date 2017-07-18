@@ -33,7 +33,7 @@ class ClientsAdd extends Component {
         const { handleSubmit } = this.props;
         return (
             <div>
-                <PageHeader>New CLient ......</PageHeader>
+                <PageHeader>Add client</PageHeader>
                 <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
                     <Field
                         label="Client Name"
