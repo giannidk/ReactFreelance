@@ -14,3 +14,13 @@ export const FETCH_PROJECTS_FAIL = 'fetch_projects_fail';
 export const FETCH_PROJECT_DETAILS = 'fetch_project_details';
 export const FETCH_PROJECT_DETAILS_SUCCESS = 'fetch_project_details_success';
 export const FETCH_PROJECT_DETAILS_FAIL = 'fetch_project_details_fail';
+
+export const FETCH_REGISTRATIONS = 'fetch_registrations';
+export const FETCH_REGISTRATIONS_SUCCESS = 'fetch_registrations_success';
+export const FETCH_REGISTRATIONS_FAIL = 'fetch_registrations_fail';
+
+export const FETCH_REGISTRATIONS_DETAILS = 'fetch_registrations_details';
+export const FETCH_REGISTRATIONS_DETAILS_SUCCESS = 'fetch_registrations_details_success';
+export const FETCH_REGISTRATIONS_DETAILS_FAIL = 'fetch_registrations_details_fail';
+export const REGISTRATIONS_ADD = 'registrations_add';
+

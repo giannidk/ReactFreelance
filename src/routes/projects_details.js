@@ -18,8 +18,7 @@ class ProjectsDetails extends Component {
         return _.map(project.registrations, (registration, key) => {
             return(
                 <tr key={key}>
-                    <td><Link to={`/registrations/${key}`}>{key}</Link></td>
-                    <td>{registration.description}</td>
+                    <td><Link to={`/registrations/${key}`}>{registration}</Link></td>
                 </tr>
             );
         });
@@ -29,7 +28,6 @@ class ProjectsDetails extends Component {
         if( error ) {
             return (
                 <div>
-                    <PageHeader>Projects List</PageHeader>
                     <Alert bsStyle="danger">
                         <p>{error}</p>           
                     </Alert>
@@ -41,15 +39,14 @@ class ProjectsDetails extends Component {
         }
         return (
             <div>
-                <PageHeader>{this.props.project.projectName} </PageHeader>
+                <PageHeader>{project.projectName} </PageHeader>
                 <h4>{project.clientName}</h4>
                 <div>{project.projectDescription}</div>
                 <hr />
-                <Table striped bordered condensed hover responsive>
+                <Table striped bordered hover responsive>
                     <thead>
                     <tr>
-                        <th>Reg. ID </th>
-                        <th>Reg Name</th>
+                        <th>Registrations for this project</th>
                     </tr>
                     </thead>
                     <tbody>                    

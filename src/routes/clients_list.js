@@ -46,7 +46,7 @@ class ClientsList extends Component {
         return (
             <div>
             <PageHeader>Clients List</PageHeader>
-            <Table striped bordered condensed hover responsive>
+            <Table striped bordered hover responsive>
                 <thead>
                 <tr>
                     <th>Client Name</th>

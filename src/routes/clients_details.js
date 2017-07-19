@@ -52,7 +52,7 @@ class ClientsDetails extends Component {
                 <div><strong>@:</strong> {client.contactEmail}</div>
                 <div><strong>Tlf.:</strong> {client.contactPhone}</div>                
                 <hr />
-                    <Table striped bordered condensed hover responsive>
+                    <Table striped bordered hover responsive>
                 <thead>
                 <tr>
                     <th>Projects</th>

@@ -17,7 +17,6 @@ class ProjectsList extends Component {
         return _.map(projects, (project, key) => {
             return(
                 <tr key={key}>
-                    <td><Link to={`/clients/${project.client}`}>{project.clientName}</Link></td>
                     <td><Link to={`/projects/${key}`}>{project.projectName}</Link></td>
                     <td>{project.projectDescription}</td>
                 </tr>
@@ -43,10 +42,9 @@ class ProjectsList extends Component {
         return (
             <div>
             <PageHeader>Projects</PageHeader>
-            <Table striped bordered condensed hover responsive>
+            <Table striped bordered hover responsive>
                 <thead>
                 <tr>
-                    <th>Client </th>
                     <th>Project Name</th>
                     <th>Project Description</th>
                 </tr>

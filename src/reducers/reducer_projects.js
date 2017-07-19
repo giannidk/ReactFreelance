@@ -18,6 +18,7 @@ export default function (state = INITIAL_STATE, action) {
         case FETCH_PROJECTS:
             return { ...state, loading: true };  
         case FETCH_PROJECTS_SUCCESS:
+            console.log(action.payload);
             return { ...state, list: action.payload, error: null, loading: false };  
         case FETCH_PROJECTS_FAIL:
             return { ...state, error: action.error, loading: false };  
