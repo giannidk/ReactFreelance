@@ -132,8 +132,12 @@ export function addRegistration(values, callbackFunction) {
             return total;
         }
 
+        const totalTime = parseInt(values.hours)*60+parseInt(values.minutes);
+        const totalPrice = (totalTime/60)*parseFloat(values.price).toFixed(2);
+        console.log(totalTime);
+
 		database.ref(regsRoot)
-			.push({ ...values, status: 'open', time: (parseInt(values.hours) + parseInt(values.minutes)), total: calcTotal(values.hours, values.minutes, values.price)})
+			.push({ ...values, status: 'open', time: totalTime, total: totalPrice})
 			.then( snap => {
                 console.log(snap.getKey());
                 database.ref(projectsRegsRoot).child(values.project).child(snap.getKey())
