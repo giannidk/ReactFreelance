@@ -14,7 +14,6 @@ class ClientsList extends Component {
 
     renderList() {
         const { clients } = this.props;
-        console.log(clients);
             return _.map(clients, (client, key) => {
             return(
                 <tr key={key}>

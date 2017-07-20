@@ -1,6 +1,8 @@
 import {
 	database,
-	baseRoot,
+  projectsRoot,
+  registrationsRoot as regsRoot,
+  projectsRegistrationsRoot as projectsRegsRoot
 } from '../firebase';
 import {
 	FETCH_PROJECTS,
@@ -11,10 +13,12 @@ import {
 	FETCH_PROJECT_DETAILS_FAIL,
 } from './types';
 
-const projectsRoot= `${baseRoot}/projects`;
+//const projectsRoot= `${baseRoot}/projects`;
 //const clientsRoot = `${baseRoot}/clients`;
-const projectsRegsRoot = `${baseRoot}/projectsRegistrations`;
-const regsRoot = `${baseRoot}/registrations`;
+
+//const projectsRegsRoot = `${baseRoot}/projectsRegistrations`;
+
+//const regsRoot = `${baseRoot}/registrations`;
 
 export function fetchProjects() {
 	return (dispatch) => {

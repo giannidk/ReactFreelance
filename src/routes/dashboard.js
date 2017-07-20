@@ -8,6 +8,12 @@ class Dashboard extends Component {
             <PageHeader>Dashboard <small>project status</small></PageHeader>
             <p>As the demo app concentrates on the registrations, clients and projects have limited functionalities and are previously set in the database.</p>
              <ListGroup>
+                <ListGroupItem header="Auth">
+                    This demo app doesn't have an implemented authentication.
+                </ListGroupItem>
+                <ListGroupItem header="Settings">
+                    Settings such as VAT value and currency are provided at ap start and can't be changed.
+                </ListGroupItem>
                 <ListGroupItem header="Clients">
                     Clients are already set, there's possibility to add and remove clients but not to edit specific client.
                 </ListGroupItem>

@@ -5,6 +5,12 @@ import ProjectsReducer from './reducer_projects';
 import RegistrationsReducer from './reducer_registrations';
 
 const rootReducer = combineReducers({
+    appData: () => {
+      return {
+        "VAT": "25",
+        "currency": "DKK"
+      }
+    },
     clients: ClientsReducer,
     projects: ProjectsReducer,
     registrations: RegistrationsReducer,

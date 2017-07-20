@@ -88,7 +88,7 @@ class ProjectsDetails extends Component {
                 {this.renderTotalStatus()}
                 <hr />
                 <Link to="/projects" className="btn btn-primary">Projects list</Link>                
-                <Link to={`/projects/${this.props.match.params.key}`} className="btn btn-success pull-right" style={{marginLeft: '5px'}}>Invoice</Link>                
+                <Link to={`/projects/invoice/${this.props.match.params.key}`} className="btn btn-success pull-right" style={{marginLeft: '5px'}}>Invoice</Link>                
                 <Link to={`/registrations/add/${this.props.match.params.key}`} className="btn btn-primary pull-right">
                   Add Registration
                 </Link>                

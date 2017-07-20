@@ -1,6 +1,7 @@
 import {
 	database,
-	baseRoot,
+  registrationsRoot as regsRoot,
+  projectsRegistrationsRoot as projectsRegsRoot
 } from '../firebase';
 
 import {
@@ -13,10 +14,6 @@ import {
     REGISTRATIONS_ADD,
     REGISTRATION_DELETE
 } from './types';
-
-const regsRoot = `${baseRoot}/registrations`;
-//const projectsRoot = `${baseRoot}/projects`;
-const projectsRegsRoot = `${baseRoot}/projectsRegistrations`;
 
  export function fetchRegistrations() {
     return (dispatch) => {

@@ -1,7 +1,7 @@
 import firebase from 'firebase';
 
   var config = {
-     apiKey: "AIzaSyBRYMDh-hJEYpWI1mg_2P36bvjT3n7jhuo",
+    apiKey: "AIzaSyBRYMDh-hJEYpWI1mg_2P36bvjT3n7jhuo",
     authDomain: "reactfreelance.firebaseapp.com",
     databaseURL: "https://reactfreelance.firebaseio.com",
     projectId: "reactfreelance",
@@ -12,4 +12,17 @@ import firebase from 'firebase';
 
 const database = firebase.database();
 const baseRoot = '/users/3905';
-export {database, baseRoot};
+const clientsRoot = `${baseRoot}/clients`;
+const projectsRoot = `${baseRoot}/projects`;
+const clientsProjectsRoot = `${baseRoot}/clientsProjects`;
+const registrationsRoot = `${baseRoot}/registrations`;
+const projectsRegistrationsRoot = `${baseRoot}/projectsRegistrations`;
+export {
+  database, 
+  baseRoot,
+  clientsRoot,
+  projectsRoot,
+  clientsProjectsRoot,
+  registrationsRoot,
+  projectsRegistrationsRoot
+};

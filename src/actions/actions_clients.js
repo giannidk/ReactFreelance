@@ -1,6 +1,7 @@
 import {
 	database,
-	baseRoot
+  clientsRoot,
+  clientsProjectsRoot
 } from '../firebase';
 import {
 	FETCH_CLIENTS,
@@ -12,10 +13,6 @@ import {
     CLIENT_DETAILS_SUCCESS,
     CLIENT_DETAILS_FAIL
 } from './types';
-
-const clientsRoot= `${baseRoot}/clients`;
-const clientsProjectsRoot = `${baseRoot}/clientsProjects`;
-
 
 export function fetchClients() {
 	return (dispatch) => {
