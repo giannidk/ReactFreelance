@@ -1,4 +1,4 @@
 export * from './Spinner';
 export * from './Topnav';
-export * from './ButtonToolbarTemp';
+export * from './ConfirmModal';
 

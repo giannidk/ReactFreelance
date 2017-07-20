@@ -23,4 +23,5 @@ export const FETCH_REGISTRATIONS_DETAILS = 'fetch_registrations_details';
 export const FETCH_REGISTRATIONS_DETAILS_SUCCESS = 'fetch_registrations_details_success';
 export const FETCH_REGISTRATIONS_DETAILS_FAIL = 'fetch_registrations_details_fail';
 export const REGISTRATIONS_ADD = 'registrations_add';
+export const REGISTRATION_DELETE = 'registrations_delete';
 

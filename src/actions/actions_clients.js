@@ -83,7 +83,6 @@ export function clientDetails(key) {
 			{
 				// Creating new container Objct
 				let clientDetails = {...snap.val(), projects: {} };				
-
 				 // Fetching all Client's Projects
 				database.ref(clientsProjectsRoot).child(key)				
 					.once('value')

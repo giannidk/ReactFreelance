@@ -1,8 +1,7 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
-import { PageHeader, Table, Alert, Label, Button } from 'react-bootstrap';
+import { PageHeader, Table, Alert, Label } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { LinkContainer } from 'react-router-bootstrap';
 import { connect } from 'react-redux';
 import { fetchRegistrations } from '../actions';
 import { Spinner } from '../components/common';
@@ -21,7 +20,7 @@ class RegistrationsList extends Component {
                     <td>{reg.project}</td>
                     <td><Link to={`/registrations/${key}`}>{reg.name}</Link></td>
                     <td>{reg.date}</td>
-                    <td>{reg.time}</td>
+                    <td>{reg.hours}:{reg.minutes}</td>
                     <td>{reg.total}</td>
                     <td>
                         <Label bsStyle={(reg.status === 'open' ? 'warning' : 'success')}>
@@ -66,9 +65,8 @@ class RegistrationsList extends Component {
                         {this.renderList()}
                     </tbody>
                 </Table>
-                <LinkContainer to="/registrations/add" className="pull-right">
-                    <Button bsStyle="primary">Add Registration</Button>
-                </LinkContainer>
+                <hr />
+                <Link to="/registrations/add" className="btn btn-primary pull-right">Add Registration</Link>
             </div>
         );
     }

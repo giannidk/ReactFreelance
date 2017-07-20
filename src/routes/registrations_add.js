@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
 import { PageHeader } from 'react-bootstrap';
+import DatePicker from 'react-bootstrap-date-picker';
 import { Field, reduxForm } from 'redux-form';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -8,8 +9,41 @@ import { fetchProjects, addRegistration } from '../actions';
 import { Spinner } from '../components/common';
 
 class RegistrationsAdd extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            date: new Date(),
+        };        
+    }
+
     componentWillMount(){
         this.props.fetchProjects();
+    }
+    componentDidMount() {
+      // initializing default values for the form
+      const { initialize } = this.props;
+      initialize({
+              hours: '0',
+              minutes: '15',
+              project: this.props.match.params.projectID || '',
+              date: '25. July 2017'
+            });
+    }
+
+    handlePickerChange(value) {
+        console.log('DATE-----:', value);
+        this.setState({
+            date: value
+        });
+    }
+
+    renderProjects() {           
+        const { projects } = this.props;
+        return _.map(projects, (project, key) => {
+            return(                
+                <option key={key} value={key}>{project.projectName}</option>
+            );
+        });
     }
 
     renderField(field) {
@@ -21,6 +55,9 @@ class RegistrationsAdd extends Component {
                 <input
                     type={ field.type || 'text'}
                     className="form-control"
+                    step={field.step}
+                    max={field.max}
+                    min={field.min}
                     {...field.input}
                 />
                 <p className="control-label">{touched ? error : ''}</p>
@@ -28,28 +65,37 @@ class RegistrationsAdd extends Component {
         );
     }
 
-    renderProjects() {
-        const { projects } = this.props;
-        return _.map(projects, (project, key) => {
-            return(                
-                <option key={key} value={key}>{project.projectName}</option>
-            );
-        });
-    }
-
-    renderSelectField({ input, label, type, containerClass, meta: { touched, error }, children }){
-        //const { meta: { touched, error } } = field;
-        const className = `${containerClass} form-group ${touched && error ? 'has-error' : ''}`;
+    renderSelectField(field){       
+        const { meta: { touched, error } } = field;
+        const className = `${field.containerClass} form-group ${touched && error ? 'has-error' : ''}`;
         return (
             <div className={className}>
-            <label>{label}</label>
+            <label>{field.label}</label>
             <div>
-            <select  className="form-control" {...input}>
-                {children}
+            <select  className="form-control" {...field.input}>
+                {field.children}
             </select>
             <p className="control-label">{touched ? error : ''}</p>
             </div>
         </div>
+        );
+    }
+
+    renderDatepicker(field){
+         const { meta: { touched, error } } = field;
+        const className = `${field.containerClass} form-group ${touched && error ? 'has-error' : ''}`;
+        return (
+            <div className={className}>
+                 <label>{field.label}</label>
+                    <DatePicker 
+                        {...field.input}
+                        showTodayButton
+                        dateFormat="DD-MM-YYYY" 
+                        value={field.value}
+                        selected={field.input.value ? field.input.value : null} 
+                    />
+                    {touched && error && <p className="control-label">{touched ? error : ''}</p>}
+            </div>
         );
     }
 
@@ -58,7 +104,6 @@ class RegistrationsAdd extends Component {
             this.props.history.push('/registrations');
         });
     }
-
 
     render() {
         const { handleSubmit, loading } = this.props;
@@ -69,9 +114,51 @@ class RegistrationsAdd extends Component {
             <div>
                 <PageHeader>Add Registration</PageHeader>
                 <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+                   {/*  <Field 
+                        label="Date"
+                        name="date"
+                        containerClass="col-sm-4"
+                        id="example-datepicker"
+                        //value={this.state.date.toLocaleTimeString}
+                        //onChange={this.handlePickerChange.bind(this)}
+                        component={this.renderDatepicker}
+                    /> */}
+                    <Field
+                        label="Date"
+                        name="date"
+                        containerClass="col-sm-4"
+                        component={this.renderField}
+                    /> 
+                     <Field
+                        label="Hours"
+                        name="hours"
+                        type="number"
+                        min="0"                        
+                        containerClass="col-sm-3"
+                        component={this.renderField}
+                    />                     
+                      <Field
+                        label="Minutes"
+                        name="minutes"
+                        type="number"
+                        step="15"
+                        min="0"                        
+                        max="45"   
+                        containerClass="col-sm-3"
+                        component={this.renderField}
+                    />                       
+                    <Field
+                        label="Price (hour)"
+                        name="price"
+                        type="number"
+                        min="0"
+                        containerClass="col-sm-2"
+                        component={this.renderField}
+                    />
                     <Field 
                         name="project" 
                         component={this.renderSelectField} 
+                        defaultValue="02"
                         containerClass="col-sm-12"
                         label="Project">
                         <option value="">Please select ...</option>
@@ -89,36 +176,10 @@ class RegistrationsAdd extends Component {
                         containerClass="col-sm-12"
                         component={this.renderField}
                     />
-                    <Field
-                        label="Date"
-                        name="date"
-                        containerClass="col-sm-4"
-                        component={this.renderField}
-                    />
-                    <Field
-                        label="Hours"
-                        name="hours"
-                        type="number"
-                        containerClass="col-sm-3"
-                        component={this.renderField}
-                    />
-                    <Field
-                        label="Minutes"
-                        name="minutes"
-                        type="number"
-                        containerClass="col-sm-3"
-                        component={this.renderField}
-                    />
-                    <Field
-                        label="Price per hour"
-                        name="price"
-                        containerClass="col-sm-2"
-                        component={this.renderField}
-                    />
+                   
+                    
                     <div className="pull-right">
-                        <button type="submit" className="btn btn-primary">
-                            Submit
-                        </button>
+                        <button type="submit" className="btn btn-primary">Submit</button>
                         <Link to="/registrations" className="btn btn-danger" style={{marginLeft: 5}}>Cancel</Link>
                     </div>
                 </form>
@@ -137,33 +198,37 @@ function validate(values) {
     if(!values.description) {
         errors.description = "Enter a small description";
     }
+    
     if(!values.project) {
         errors.project = "Enter the project!";
     } 
-    if(!values.time) {
-        errors.time = "Enter the time!";
-    }
     if(!values.date) {
         errors.date = "Enter the date!";
     }
-    if(!values.price) {
-        errors.price = "Enter the price per hour!";
-    }
+     if(!values.price) {
+        errors.price = "Enter value!";
+    } 
     return errors;
 }
 function mapStateToProps({ projects }) {
-    console.log(projects)
     return { 
         loading: projects.loading,
         error: projects.error,
-        projects: projects.list
+        projects: projects.list,
+        //initialValues: registrations.registrationFormInitialValues
+        initialValues: {
+          minutes: 0
+        }
     };
 }
 
+/* InitializeFromStateForm = reduxForm({
+  form: 'initializeFromState' // a unique identifier for this form
+})(InitializeFromStateForm) */
 
 export default reduxForm({
     validate,
-    form: 'RegistrationsAddForm'
+    form: 'RegistrationsAddForm', 
 })(
     connect(mapStateToProps, { addRegistration, fetchProjects })(RegistrationsAdd)
 );

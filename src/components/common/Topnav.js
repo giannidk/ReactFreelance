@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-//import { Link } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
 import { 
   Navbar, 
@@ -20,32 +19,24 @@ class Topnav extends Component{
               <Navbar.Collapse>
                 <Nav>
                   <LinkContainer to="/dashboard">
-                    <NavItem eventKey={1}>
-                       Dashboard                  
-                    </NavItem>
+                    <NavItem>Dashboard</NavItem>
                   </LinkContainer>
                   
                   <LinkContainer to="/clients">
-                    <NavItem eventKey={2}>
-                       Clients                  
-                    </NavItem>
+                    <NavItem>Clients</NavItem>
                   </LinkContainer>
                   
                   <LinkContainer to="/projects">
-                    <NavItem eventKey={2} >
-                       Projects                  
-                    </NavItem>
+                    <NavItem>Projects</NavItem>
                   </LinkContainer>
                   
                   <LinkContainer to="/registrations">
-                    <NavItem eventKey={1} >
-                       Registrations                  
-                    </NavItem>
+                    <NavItem>Registrations</NavItem>
                   </LinkContainer>
                 </Nav>
                 <Nav pullRight>
-                  <NavItem eventKey={2} href="#">Settings</NavItem>
-                  <NavItem eventKey={1} href="#">Log out (admin)</NavItem>
+                  <NavItem>Settings</NavItem>
+                  <NavItem>Log out (admin)</NavItem>
                 </Nav>
               </Navbar.Collapse>
             </Navbar>

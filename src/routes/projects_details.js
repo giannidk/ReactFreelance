@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
-import { PageHeader, Alert, Table } from 'react-bootstrap';
+import { PageHeader, Alert, Table, Label } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { projectDetails } from '../actions';
@@ -18,10 +18,39 @@ class ProjectsDetails extends Component {
         return _.map(project.registrations, (registration, key) => {
             return(
                 <tr key={key}>
-                    <td><Link to={`/registrations/${key}`}>{registration}</Link></td>
+                    <td><Link to={`/registrations/${key}`}>{registration.name}</Link></td>
+                    <td>{registration.total}</td>
+                    <td>
+                      <Label bsStyle={(registration.status === 'open' ? 'warning' : 'success')}>
+                          {registration.status}
+                      </Label>
+                    </td>
                 </tr>
             );
         });
+    }
+    renderTotalStatus(){
+      const { registrations } = this.props.project;
+      let invoiced = 0; 
+      let toInvoice = 0;   
+      for (let reg in registrations) {
+        console.log(reg);
+          if (registrations[reg].status === 'open') {
+              console.log(registrations.total);
+              toInvoice += parseFloat(registrations[reg].total)
+          } else {
+              invoiced += parseFloat(registrations[reg].total)
+          }
+      }  
+      return(
+        <div>
+          <div className="text-success">{`Total invoiced: ${invoiced}`}</div>
+          <div className="text-warning">{`Total to invoice: ${toInvoice}`}</div>
+        </div>
+      );
+
+      
+      
     }
     render() {
         const { project, error } = this.props;
@@ -47,6 +76,8 @@ class ProjectsDetails extends Component {
                     <thead>
                     <tr>
                         <th>Registrations for this project</th>
+                        <th>Total</th>
+                        <th>Status</th>
                     </tr>
                     </thead>
                     <tbody>                    
@@ -54,14 +85,13 @@ class ProjectsDetails extends Component {
                     </tbody>
                 </Table>
                 <hr />
-                <Link
-                    to="/projects"
-                    className="btn btn-primary pull-right"
-                >Projects list</Link>
-                {/* <button
-                    onClick={this.onDeleteClick.bind(this)}
-                    className="btn btn-danger"
-                >Delete</button> */}
+                {this.renderTotalStatus()}
+                <hr />
+                <Link to="/projects" className="btn btn-primary">Projects list</Link>                
+                <Link to={`/projects/${this.props.match.params.key}`} className="btn btn-success pull-right" style={{marginLeft: '5px'}}>Invoice</Link>                
+                <Link to={`/registrations/add/${this.props.match.params.key}`} className="btn btn-primary pull-right">
+                  Add Registration
+                </Link>                
             </div>
         );
     }

@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
-import { PageHeader, Table, Button, Alert } from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap';
+import { PageHeader, Table, Alert } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { fetchClients } from '../actions';
@@ -59,9 +58,8 @@ class ClientsList extends Component {
                 {this.renderList()}                              
                 </tbody>
             </Table>
-            <LinkContainer to="/clients/add" className="pull-right">
-                <Button bsStyle="primary">Add Client</Button>
-            </LinkContainer>
+            <hr />
+                <Link to="/clients/add" className="btn btn-primary pull-right">Add Client</Link>
             </div>
         );
     }
