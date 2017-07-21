@@ -13,7 +13,6 @@ class RegistrationsList extends Component {
     }
     renderList() {
         const { registrations } = this.props;
-        console.log(registrations);
         return _.map( registrations, (reg, key) => {
             return (
                 <tr key={key}>

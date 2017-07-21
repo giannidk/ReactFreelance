@@ -23,7 +23,6 @@ class RegistrationsDetails extends Component {
     }
     render() {
         const { registration, error } = this.props;
-        console.log(registration);
         if( error ) {
             return (
                 <div>
@@ -94,7 +93,6 @@ class RegistrationsDetails extends Component {
 }
 
 function mapStateToProps({registrations}, ownProps) {
-    console.log(registrations);
     return {
         loading: registrations.loading,
         error: registrations.error, 

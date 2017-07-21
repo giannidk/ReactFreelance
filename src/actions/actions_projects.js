@@ -55,38 +55,37 @@ export function projectDetails(key) {
 				let projectDetails = {...snap.val(), registrations: {} };				
 				 // Fetching all Project's Registrations
 				database.ref(projectsRegsRoot).child(key)				
-					.once('value')
-					.then( snap => {           
-            // control if the project has some registrations, otherwise return dispatch
-            if (snap.val() === null) {
-               dispatch({
-                      type: FETCH_PROJECT_DETAILS_SUCCESS,
-                      key: key,
-                      payload: projectDetails
-                    }); 
-            }
-            // if the project has registrations, fetch details
-            snap.forEach( regSnap => {
-              // Retrieve registration Details
-                database.ref(regsRoot).child(regSnap.key)
-                .once('value')
-                .then(
-                  // success
-                  regsDetails => { 
-                    console.log(regsDetails.val().status); 
-                    projectDetails.registrations = { ...projectDetails.registrations, [regsDetails.key]: regsDetails.val()}
-                    projectDetails = { ...projectDetails, ...projectDetails.registrations}
-                    dispatch({
-                      type: FETCH_PROJECT_DETAILS_SUCCESS,
-                      key: key,
-                      payload: projectDetails
-                    }); 
-                  },
-                  // error
-                  () => { console.log('ERROR');}
-                )
-            })
-					});
+        .once('value')
+        .then( snap => {           
+          // control if the project has some registrations, otherwise return dispatch
+          if (snap.val() === null) {
+              dispatch({
+                    type: FETCH_PROJECT_DETAILS_SUCCESS,
+                    key: key,
+                    payload: projectDetails
+                  }); 
+          }
+          // if the project has registrations, fetch details
+          snap.forEach( regSnap => {
+            // Retrieve registration Details
+              database.ref(regsRoot).child(regSnap.key)
+              .once('value')
+              .then(
+                // success
+                regsDetails => { 
+                  projectDetails.registrations = { ...projectDetails.registrations, [regsDetails.key]: regsDetails.val()}
+                  projectDetails = { ...projectDetails, ...projectDetails.registrations}
+                  dispatch({
+                    type: FETCH_PROJECT_DETAILS_SUCCESS,
+                    key: key,
+                    payload: projectDetails
+                  }); 
+                },
+                // error
+                () => { console.log('ERROR');}
+              )
+          })
+        });
 				   
 			},
 			// error

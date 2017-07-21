@@ -14,22 +14,21 @@ class ProjectsDetails extends Component {
         }
     }
     renderRegistrations() {
-        const { project } = this.props;
-       console.log(project.registrations);
-        return _.map(project.registrations, (registration, key) => {
-          if (registration.status === 'open') {
-            return(
-                <tr key={key}>
-                    <td><Link to={`/registrations/${key}`}>{registration.name}</Link></td>
-                    <td>{registration.total}</td>
-                    <td>
-                      {this.props.appData.VAT} %
-                    </td>
-                    <td>{parseFloat(registration.total, 10) + (parseFloat(registration.total, 10) / 100 * parseFloat(this.props.appData.VAT, 10))}</td>
-                </tr>
-            );
-          }
-        });
+      const { project } = this.props;
+      return _.map(project.registrations, (registration, key) => {
+        if (registration.status === 'open') {
+          return(
+              <tr key={key}>
+                  <td><Link to={`/registrations/${key}`}>{registration.name}</Link></td>
+                  <td>{registration.total}</td>
+                  <td>
+                    {this.props.appData.VAT} %
+                  </td>
+                  <td>{parseFloat(registration.total, 10) + (parseFloat(registration.total, 10) / 100 * parseFloat(this.props.appData.VAT, 10))}</td>
+              </tr>
+          );
+        }
+      });
     }
     renderToInvoiceNet(){
       const { registrations } = this.props.project;
@@ -55,13 +54,11 @@ class ProjectsDetails extends Component {
     }
 
     onButtonPress(){
-      const { project } = this.props;
       const { registrations } = this.props.project;
       const filteredRegs = {};
 
       for( let key in registrations ){
         if(registrations[key].status !== 'invoiced'){
-          console.log(registrations[key].status);
           filteredRegs[key] = registrations[key];
         }
       }

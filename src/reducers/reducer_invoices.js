@@ -1,7 +1,5 @@
 import { 
   SAVE_INVOICE,
-	SAVE_INVOICE_SUCCESS,
-  SAVE_INVOICE_FAIL,
   FETCH_INVOICES,
   FETCH_INVOICES_SUCCESS,
   FETCH_INVOICES_FAIL,
@@ -27,14 +25,9 @@ export default function (state = INITIAL_STATE, action) {
         case FETCH_INVOICES_DETAILS:
             return { ...state, loading: true }; 
         case FETCH_INVOICES_DETAILS_SUCCESS:
-            console.log(action.payload);
             return { ...state, [action.key]: action.payload, loading: false };
         case FETCH_INVOICES_DETAILS_FAIL:
             return { ...state, error: action.error, loading: false }; 
-        /*
-        case REGISTRATION_DELETE:
-            return action.payload; 
-        */  
         case SAVE_INVOICE:
             return action.payload;   
         default: 

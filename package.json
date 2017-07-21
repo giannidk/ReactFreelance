@@ -2,6 +2,7 @@
   "name": "react_freelance",
   "version": "0.1.0",
   "private": true,
+  "homepage" : "https://http://ambronet.dk/demos/react-freelance",
   "dependencies": {
     "firebase": "^4.1.3",
     "react": "^15.6.1",

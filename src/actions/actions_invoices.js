@@ -1,15 +1,11 @@
 import {
 	database,
-  //projectsRoot,
   registrationsRoot as regsRoot,
-  //projectsRegistrationsRoot as projectsRegsRoot,
   invoicesRoot,
   projectsInvoicesRoot
 } from '../firebase';
 import {
 	SAVE_INVOICE,
-	SAVE_INVOICE_SUCCESS,
-  SAVE_INVOICE_FAIL,
   FETCH_INVOICES,
   FETCH_INVOICES_SUCCESS,
   FETCH_INVOICES_FAIL,
@@ -98,7 +94,6 @@ export function invoiceDetails(key) {
 			// success
 			snap => 
 			{
-        console.log(key, snap.val());
 				dispatch({
             type: FETCH_INVOICES_DETAILS_SUCCESS,
             key: key,

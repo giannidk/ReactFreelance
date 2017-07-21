@@ -12,7 +12,6 @@ class InvoicesList extends Component {
     }
     renderList() {
         const { invoices } = this.props;
-        console.log(invoices);
         return _.map( invoices, (invoice, key) => {
             return (
                 <tr key={key}>
@@ -23,7 +22,7 @@ class InvoicesList extends Component {
             
     }
     render() {
-        const { invoices, loading, error } = this.props;
+        const { loading, error } = this.props;
         if( loading ) {
             return <Spinner />;
         }

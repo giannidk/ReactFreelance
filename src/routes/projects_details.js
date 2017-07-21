@@ -34,7 +34,6 @@ class ProjectsDetails extends Component {
       let invoiced = 0; 
       let toInvoice = 0;   
       for (let reg in registrations) {
-        console.log(reg);
           if (registrations[reg].status === 'open') {
               toInvoice += parseFloat(registrations[reg].total)
           } else {
@@ -47,9 +46,6 @@ class ProjectsDetails extends Component {
           <div className="text-warning">{`Total to invoice: ${toInvoice}`}</div>
         </div>
       );
-
-      
-      
     }
     render() {
         const { appData, project, error } = this.props;

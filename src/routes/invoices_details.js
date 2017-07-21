@@ -10,7 +10,6 @@ class InvoicesDetails extends Component {
     componentWillMount(){
         if(!this.props.pojects){ 
             const { invoiceKey } = this.props.match.params;
-            console.log(this.props.invoice);
             this.props.invoiceDetails(invoiceKey);
         }
     }
@@ -33,8 +32,7 @@ class InvoicesDetails extends Component {
       const { registrations } = this.props.invoice;
       let toInvoice = 0;  
       for (let reg in registrations) {
-        console.log(reg);
-              toInvoice += parseFloat(registrations[reg].total)
+        toInvoice += parseFloat(registrations[reg].total)
       }  
         //toInvoiceTotal = toInvoice/100*25;
       return toInvoice;
@@ -44,8 +42,7 @@ class InvoicesDetails extends Component {
       let toInvoice = 0;  
       let toInvoiceTotal = 0;
       for (let reg in registrations) {
-        console.log(reg);
-              toInvoice += parseFloat(registrations[reg].total)
+          toInvoice += parseFloat(registrations[reg].total)
       }  
         toInvoiceTotal = toInvoice + (parseFloat(toInvoice, 10) / 100 * 25);
       return toInvoiceTotal;
@@ -53,7 +50,6 @@ class InvoicesDetails extends Component {
 
     render() {
         const { appData, invoice, error } = this.props;
-        const { invoiceKey } = this.props.match.params;
         if( error ) {
             return (
                 <div>
@@ -72,8 +68,6 @@ class InvoicesDetails extends Component {
 
                  <Panel>
                    <h4>Invoice Nr.: {invoice.invoiceNumber}</h4>
-
-
                    <Table responsive>
                       <thead>                      
                       </thead>
@@ -90,11 +84,8 @@ class InvoicesDetails extends Component {
                              <div><strong>CVR nr.:</strong>...</div>
                            </td>
                       </tr>                          
-                      </tbody>
-                      
+                      </tbody>                      
                   </Table> 
-
-
                     <Table striped bordered hover responsive>
                       <thead>
                       <tr>
