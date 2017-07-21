@@ -17,6 +17,8 @@ const projectsRoot = `${baseRoot}/projects`;
 const clientsProjectsRoot = `${baseRoot}/clientsProjects`;
 const registrationsRoot = `${baseRoot}/registrations`;
 const projectsRegistrationsRoot = `${baseRoot}/projectsRegistrations`;
+const invoicesRoot = `${baseRoot}/invoices`;
+const projectsInvoicesRoot = `${baseRoot}/projectsInvoices`;
 export {
   database, 
   baseRoot,
@@ -24,5 +26,7 @@ export {
   projectsRoot,
   clientsProjectsRoot,
   registrationsRoot,
-  projectsRegistrationsRoot
+  projectsRegistrationsRoot,
+  invoicesRoot,
+  projectsInvoicesRoot
 };

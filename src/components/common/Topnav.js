@@ -33,10 +33,14 @@ class Topnav extends Component{
                   <LinkContainer to="/registrations">
                     <NavItem>Registrations</NavItem>
                   </LinkContainer>
+                  
+                  <LinkContainer to="/invoices">
+                    <NavItem>Invoices</NavItem>
+                  </LinkContainer>
                 </Nav>
                 <Nav pullRight>
-                  <NavItem>Settings</NavItem>
-                  <NavItem>Log out (admin)</NavItem>
+                  {/* <NavItem>Settings</NavItem> */}
+                  {/* <NavItem>Log out (admin)</NavItem> */}
                 </Nav>
               </Navbar.Collapse>
             </Navbar>

@@ -1,23 +1,22 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
-import { PageHeader, Alert, Panel, Table, Button } from 'react-bootstrap';
+import { PageHeader, Alert, Panel, Table } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { projectDetails, saveInvoice } from '../actions';
+import { invoiceDetails } from '../actions';
 import { Spinner } from '../components/common';
 
-class ProjectsDetails extends Component {
+class InvoicesDetails extends Component {
     componentWillMount(){
-        if(!this.props.projects){ 
-            const { key } = this.props.match.params;
-            this.props.projectDetails(key);
+        if(!this.props.pojects){ 
+            const { invoiceKey } = this.props.match.params;
+            console.log(this.props.invoice);
+            this.props.invoiceDetails(invoiceKey);
         }
     }
     renderRegistrations() {
-        const { project } = this.props;
-       console.log(project.registrations);
-        return _.map(project.registrations, (registration, key) => {
-          if (registration.status === 'open') {
+        const { invoice } = this.props;
+        return _.map(invoice.registrations, (registration, key) => {
             return(
                 <tr key={key}>
                     <td><Link to={`/registrations/${key}`}>{registration.name}</Link></td>
@@ -28,59 +27,33 @@ class ProjectsDetails extends Component {
                     <td>{parseFloat(registration.total, 10) + (parseFloat(registration.total, 10) / 100 * parseFloat(this.props.appData.VAT, 10))}</td>
                 </tr>
             );
-          }
         });
     }
     renderToInvoiceNet(){
-      const { registrations } = this.props.project;
+      const { registrations } = this.props.invoice;
       let toInvoice = 0;  
       for (let reg in registrations) {
-        if (registrations[reg].status === 'open') {
-            toInvoice += parseFloat(registrations[reg].total)
-        }
+        console.log(reg);
+              toInvoice += parseFloat(registrations[reg].total)
       }  
+        //toInvoiceTotal = toInvoice/100*25;
       return toInvoice;
     }
     renderToInvoiceTotal(){
-      const { registrations } = this.props.project;
+      const { registrations } = this.props.invoice;
       let toInvoice = 0;  
       let toInvoiceTotal = 0;
       for (let reg in registrations) {
-          if (registrations[reg].status === 'open') {
+        console.log(reg);
               toInvoice += parseFloat(registrations[reg].total)
-          }
       }  
         toInvoiceTotal = toInvoice + (parseFloat(toInvoice, 10) / 100 * 25);
       return toInvoiceTotal;
     }
 
-    onButtonPress(){
-      const { project } = this.props;
-      const { registrations } = this.props.project;
-      const filteredRegs = {};
-
-      for( let key in registrations ){
-        if(registrations[key].status !== 'invoiced'){
-          console.log(registrations[key].status);
-          filteredRegs[key] = registrations[key];
-        }
-      }
-
-         _.map(filteredRegs, (registration, key) => {            
-            registration.status = 'invoiced';            
-        });  
-      
-        let invoice = {
-        name: 'Invo name',
-        project: this.props.match.params.key,
-        registrations: filteredRegs
-      }
-      this.props.saveInvoice(invoice, () => {
-        this.props.history.push('/invoices');
-      });
-    }
     render() {
-        const { appData, project, error } = this.props;
+        const { appData, invoice, error } = this.props;
+        const { invoiceKey } = this.props.match.params;
         if( error ) {
             return (
                 <div>
@@ -90,15 +63,15 @@ class ProjectsDetails extends Component {
                 </div>
             );
         }
-        if (!project) {
+        if (!invoice) {
             return (<Spinner />);
         }
         return (
             <div>
-                <PageHeader>{project.projectName} <small>Invoice</small></PageHeader>
+                <PageHeader>{invoice.project} <small>Invoice</small></PageHeader>
 
                  <Panel>
-                   <h4>Invoicing: {project.projectName}</h4>
+                   <h4>Invoice Nr.: {invoice.invoiceNumber}</h4>
 
 
                    <Table responsive>
@@ -112,7 +85,7 @@ class ProjectsDetails extends Component {
                              <div><strong>CVR nr.:</strong> {appData.companyCVR}</div>
                            </td>
                            <td className="col-sm-6">
-                             <div><strong>{project.client}</strong></div>
+                             <div><strong>{invoice.client}</strong></div>
                              <div>...</div>
                              <div><strong>CVR nr.:</strong>...</div>
                            </td>
@@ -137,28 +110,24 @@ class ProjectsDetails extends Component {
                       <thead>
                       <tr>
                           <th></th>
-                          <th>{this.renderToInvoiceNet()}</th>
+                          <th>{this.renderToInvoiceNet()} {appData.currency}</th>
                           <th></th>
-                          <th className="text-success">{this.renderToInvoiceTotal()}</th>
+                          <th className="text-success">{this.renderToInvoiceTotal()} {appData.currency}</th>
                       </tr>
                       </thead>
                   </Table>                  
-                </Panel>
-                <Button bsStyle="success" className="pull-right" style={{marginLeft: '5px'}} onClick={this.onButtonPress.bind(this)}>Save Invoice</Button>
-                <Link to={`/registrations/add/${this.props.match.params.key}`} className="btn btn-primary pull-right">
-                  Add Registration
-                </Link>                
+                </Panel>               
             </div>
         );
     }
 }
 
-function mapStateToProps({ projects, appData }, ownProps) {
+function mapStateToProps({ invoices, appData }, ownProps) {
     return { 
-        project: projects[ownProps.match.params.key],
-        error: projects.error, 
+        invoice: invoices[ownProps.match.params.invoiceKey],
+        error: invoices.error, 
         appData
     };
 }
 
-export default connect(mapStateToProps, { projectDetails, saveInvoice })(ProjectsDetails);
+export default connect(mapStateToProps, { invoiceDetails})(InvoicesDetails);

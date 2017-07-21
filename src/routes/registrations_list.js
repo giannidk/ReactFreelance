@@ -33,7 +33,7 @@ class RegistrationsList extends Component {
             
     }
     render() {
-        const { loading, error } = this.props;
+        const { appData, loading, error } = this.props;
         if( loading ) {
             return <Spinner />;
         }
@@ -57,7 +57,7 @@ class RegistrationsList extends Component {
                             <th>Registration</th>
                             <th>Date</th>
                             <th>Time</th>
-                            <th>Total</th>
+                            <th>Total (net {appData.currency})</th>
                             <th>Status</th>
                         </tr>
                     </thead>
@@ -72,11 +72,12 @@ class RegistrationsList extends Component {
     }
 }
 
-function mapStateToProps ({ registrations }) {
+function mapStateToProps ({ registrations, appData }) {
    return {
         registrations: registrations.list,
         loading: registrations.loading,
         error: registrations.error,
+        appData
    }
 }
 export default connect (mapStateToProps, { fetchRegistrations })(RegistrationsList);

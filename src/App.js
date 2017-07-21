@@ -22,6 +22,8 @@ import RegistrationsEdit from './routes/registrations_edit';
 import ClientsDetails from './routes/clients_details';
 import ProjectsDetails from './routes/projects_details';
 import ProjectsInvoice from './routes/projects_invoice';
+import InvoicesList from './routes/invoices_list';
+import InvoiceDetails from './routes/invoices_details';
 
 
 class App extends Component {
@@ -38,7 +40,7 @@ class App extends Component {
               <Route path="/clients/add" component={ClientsAdd} />
               <Route path="/clients/:key" component={ClientsDetails} />
               <Route path="/clients" component={ClientsList} />
-              <Route path="/projects/invoice/:key" component={ProjectsInvoice} />
+              <Route path="/projects/:key/invoice" component={ProjectsInvoice} />
               <Route path="/projects/:key" component={ProjectsDetails} />
               <Route path="/projects" component={ProjectsList} />
               <Route path="/registrations/add/:projectID" component={RegistrationsAdd} />
@@ -46,6 +48,8 @@ class App extends Component {
               <Route path="/registrations/edit/:key" component={RegistrationsEdit} />
               <Route path="/registrations/:key" component={RegistrationsDetails} />
               <Route path="/registrations" component={RegistrationsList} />
+              <Route path="/invoices/:invoiceKey" component={InvoiceDetails} />
+              <Route path="/invoices" component={InvoicesList} />
               <Route path="/" component={Dashboard} />
             </Switch>
           </Grid>

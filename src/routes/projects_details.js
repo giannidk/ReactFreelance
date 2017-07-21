@@ -36,7 +36,6 @@ class ProjectsDetails extends Component {
       for (let reg in registrations) {
         console.log(reg);
           if (registrations[reg].status === 'open') {
-              console.log(registrations.total);
               toInvoice += parseFloat(registrations[reg].total)
           } else {
               invoiced += parseFloat(registrations[reg].total)
@@ -53,7 +52,7 @@ class ProjectsDetails extends Component {
       
     }
     render() {
-        const { project, error } = this.props;
+        const { appData, project, error } = this.props;
         if( error ) {
             return (
                 <div>
@@ -69,14 +68,13 @@ class ProjectsDetails extends Component {
         return (
             <div>
                 <PageHeader>{project.projectName} </PageHeader>
-                <h4>{project.clientName}</h4>
                 <div>{project.projectDescription}</div>
                 <hr />
                 <Table striped bordered hover responsive>
                     <thead>
                     <tr>
                         <th>Registrations for this project</th>
-                        <th>Total</th>
+                        <th>Total (net {appData.currency})</th>
                         <th>Status</th>
                     </tr>
                     </thead>
@@ -88,7 +86,7 @@ class ProjectsDetails extends Component {
                 {this.renderTotalStatus()}
                 <hr />
                 <Link to="/projects" className="btn btn-primary">Projects list</Link>                
-                <Link to={`/projects/invoice/${this.props.match.params.key}`} className="btn btn-success pull-right" style={{marginLeft: '5px'}}>Invoice</Link>                
+                <Link to={`/projects/${this.props.match.params.key}/invoice`} className="btn btn-success pull-right" style={{marginLeft: '5px'}}>Invoice Open Registrations</Link>                
                 <Link to={`/registrations/add/${this.props.match.params.key}`} className="btn btn-primary pull-right">
                   Add Registration
                 </Link>                
@@ -97,10 +95,11 @@ class ProjectsDetails extends Component {
     }
 }
 
-function mapStateToProps({ projects }, ownProps) {
+function mapStateToProps({ projects, appData }, ownProps) {
     return { 
         project: projects[ownProps.match.params.key],
         error: projects.error, 
+        appData
     };
 }
 

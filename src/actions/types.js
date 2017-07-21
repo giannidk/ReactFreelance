@@ -25,3 +25,14 @@ export const FETCH_REGISTRATIONS_DETAILS_FAIL = 'fetch_registrations_details_fai
 export const REGISTRATIONS_ADD = 'registrations_add';
 export const REGISTRATION_DELETE = 'registrations_delete';
 
+export const SAVE_INVOICE = 'save_invoice';
+export const SAVE_INVOICE_SUCCESS = 'save_invoice_success';
+export const SAVE_INVOICE_FAIL = 'save_invoice_fail';
+
+export const FETCH_INVOICES = 'fetch_invoices';
+export const FETCH_INVOICES_SUCCESS = 'fetch_invoices_success';
+export const FETCH_INVOICES_FAIL = 'fetch_invoices_fail';
+
+export const FETCH_INVOICES_DETAILS = 'fetch_invoices_details';
+export const FETCH_INVOICES_DETAILS_SUCCESS = 'fetch_invoices_details_success';
+export const FETCH_INVOICES_DETAILS_FAIL = 'fetch_invoices_details_fail';

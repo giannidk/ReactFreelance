@@ -21,7 +21,7 @@ class Dashboard extends Component {
                     Projects are already set in database, no adding and removing functionalityes.
                 </ListGroupItem>
                 <ListGroupItem header="Registrations">
-                    Registrations functionalities: CRUD                    
+                    Registrations can be added and deleted. The status of the registrations will change when they are invoiced.                  
                 </ListGroupItem>
             </ListGroup>
             </div>
