@@ -38,7 +38,7 @@ class RegistrationsList extends Component {
             <Table striped bordered hover responsive key={key}>
               <thead>
                   <tr><th colSpan="5">{key}</th></tr>
-                    <tr>
+                    <tr style={{background: '#FFF'}}>
                       <th className="col-sm-4">name</th>
                       <th className="col-sm-4">date</th>
                       <th className="col-sm-1">time</th>
