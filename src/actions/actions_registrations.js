@@ -1,5 +1,6 @@
 import {
-	database,
+  database,
+  projectsRoot,
   registrationsRoot as regsRoot,
   projectsRegistrationsRoot as projectsRegsRoot
 } from '../firebase';
@@ -16,19 +17,48 @@ import {
 } from './types';
 
  export function fetchRegistrations() {
+   let registrations = {};
     return (dispatch) => {
         dispatch({
         type: FETCH_REGISTRATIONS,
     });
-        database.ref(regsRoot)
+        database.ref(projectsRegsRoot)
         .once('value')
         .then(
             //success
-            snap => {
+            snapshot => {
+              console.log(snapshot.val());
+              if(!snapshot.val()){
+                //return dispatch if there are no registrations
                 dispatch({
                     type: FETCH_REGISTRATIONS_SUCCESS,
-					payload: snap.val()
-                });
+                    payload: registrations
+                }); 
+              }else{
+                //fetch registrations details before dispatching
+              snapshot.forEach(childSnapshot => {
+                database.ref(projectsRoot).child(childSnapshot.key)
+                .once('value')
+                .then(
+                  snap => {
+                    registrations[snap.val().projectName] = childSnapshot.val();
+                    childSnapshot.forEach(regsSnapshot => {
+                      database.ref(regsRoot).child(regsSnapshot.key)
+                      .once('value')
+                      .then(
+                        snapper => {
+                          registrations[snap.val().projectName][snapper.key] = snapper.val();
+                           dispatch({
+                              type: FETCH_REGISTRATIONS_SUCCESS,
+                              payload: registrations
+                          }); 
+                        }
+                      )
+                    }) // end child snap for regs details
+                  }
+                )
+              });
+              }
             },
             error => {
                 dispatch({
@@ -39,7 +69,7 @@ import {
         )
     }
 } 
-
+ 
 export function registrationDetails(key) {
 	return (dispatch) => {
 	dispatch({
@@ -70,8 +100,6 @@ export function registrationDetails(key) {
 	};
 };
 
-
-
 export function addRegistration(values, callbackFunction) {
 	return (dispatch) => {
         const totalTime = parseInt(values.hours, 10)*60+parseInt(values.minutes, 10);
@@ -99,7 +127,6 @@ export function addRegistration(values, callbackFunction) {
 			});
 	};
 }
-
 
 export function registrationDelete(id, projectKey, callbackFunction) {
   return (dispatch) => {
