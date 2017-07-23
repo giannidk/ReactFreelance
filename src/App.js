@@ -31,7 +31,7 @@ class App extends Component {
   const createStoreWithMiddleware = applyMiddleware(ReduxThunk)(createStore);
     return (
       <Provider store={createStoreWithMiddleware(reducers)}>
-      <BrowserRouter>
+      <BrowserRouter basename="demos/react-freelance">
         <div className="app-container">
             <Topnav />
           <Grid >
