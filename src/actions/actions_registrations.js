@@ -1,3 +1,4 @@
+import { makeShortDate } from '../helpers';
 import {
   database,
   projectsRoot,
@@ -101,31 +102,29 @@ export function registrationDetails(key) {
 
 export function addRegistration(values, callbackFunction) {
 	return (dispatch) => {
-        const totalTime = parseInt(values.hours, 10)*60+parseInt(values.minutes, 10);
-        const totalPrice = (totalTime/60)*parseFloat(values.price).toFixed(2);
+    const totalTime = parseInt(values.hours, 10)*60+parseInt(values.minutes, 10);
+    const totalPrice = (totalTime/60)*parseFloat(values.price).toFixed(2);
 
-        const date = new Date(values.date);
-        values.shortDate = (`${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`);
-        values.date = null; 
-        
+    values.shortDate = makeShortDate(values.date);
+    values.date = null;
 
-		  database.ref(regsRoot)
-			.push({ ...values, status: 'open', total: totalPrice})
-			.then( snap => {
-                database.ref(projectsRegsRoot).child(values.project).child(snap.getKey())
-                .set(values.name)
-                .then(
-                    // success
-                    () => {
-                        dispatch({
-                            type: REGISTRATIONS_ADD,
-                            payload: {}
-                        });
-                    }
-                )				
-				callbackFunction();
-			});  
-	};
+    database.ref(regsRoot)
+    .push({ ...values, status: 'open', total: totalPrice})
+    .then( snap => {
+      database.ref(projectsRegsRoot).child(values.project).child(snap.getKey())
+      .set(values.name)
+      .then(
+          // success
+          () => {
+              dispatch({
+                  type: REGISTRATIONS_ADD,
+                  payload: {}
+              });
+          }
+      )				
+      callbackFunction();
+    });  
+  };
 }
 
 export function registrationDelete(id, projectKey, callbackFunction) {

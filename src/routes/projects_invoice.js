@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { projectDetails, saveInvoice } from '../actions';
 import { Spinner } from '../components/common';
+import { makeGross } from '../helpers';
 
 class ProjectsDetails extends Component {
     componentWillMount(){
@@ -14,7 +15,7 @@ class ProjectsDetails extends Component {
         }
     }
     renderRegistrations() {
-      const { project } = this.props;
+      const { project, appData } = this.props;
       return _.map(project.registrations, (registration, key) => {
         if (registration.status === 'open') {
           return(
@@ -23,8 +24,8 @@ class ProjectsDetails extends Component {
                   <td>{registration.total}</td>
                   <td>
                     {this.props.appData.VAT} %
-                  </td>
-                  <td>{parseFloat(registration.total, 10) + (parseFloat(registration.total, 10) / 100 * parseFloat(this.props.appData.VAT, 10))}</td>
+                  </td>                 
+                  <td>{makeGross(registration.total, appData.VAT)}</td>
               </tr>
           );
         }
@@ -41,6 +42,7 @@ class ProjectsDetails extends Component {
       return toInvoice;
     }
     renderToInvoiceTotal(){
+      const { appData } = this.props;
       const { registrations } = this.props.project;
       let toInvoice = 0;  
       let toInvoiceTotal = 0;
@@ -49,7 +51,7 @@ class ProjectsDetails extends Component {
               toInvoice += parseFloat(registrations[reg].total)
           }
       }  
-        toInvoiceTotal = toInvoice + (parseFloat(toInvoice, 10) / 100 * 25);
+        toInvoiceTotal = makeGross(toInvoice, appData.VAT);
       return toInvoiceTotal;
     }
 
@@ -117,29 +119,27 @@ class ProjectsDetails extends Component {
                       </tbody>
                       
                   </Table> 
-
-
-                    <Table striped bordered hover responsive>
-                      <thead>
+                  <Table striped bordered hover responsive>
+                    <thead>
                       <tr>
-                          <th>Item</th>
-                          <th>Net</th>
-                          <th>VAT</th>
-                          <th>Total</th>
+                        <th>Item</th>
+                        <th>Net</th>
+                        <th>VAT</th>
+                        <th>Total</th>
                       </tr>
-                      </thead>
-                      <tbody>                    
-                      {this.renderRegistrations()}                              
-                      </tbody>
-                      <thead>
+                    </thead>
+                    <tbody>                    
+                    {this.renderRegistrations()}                              
+                    </tbody>
+                    <thead>
                       <tr>
-                          <th></th>
-                          <th>{this.renderToInvoiceNet()}</th>
-                          <th></th>
-                          <th className="text-success">{this.renderToInvoiceTotal()}</th>
+                        <th></th>
+                        <th>{this.renderToInvoiceNet()}</th>
+                        <th></th>
+                        <th className="text-success">{this.renderToInvoiceTotal()}</th>
                       </tr>
-                      </thead>
-                  </Table>                  
+                    </thead>
+                </Table>                  
                 </Panel>
                 <Button bsStyle="success" className="pull-right" style={{marginLeft: '5px'}} onClick={this.onButtonPress.bind(this)}>Save Invoice</Button>
                 <Link to={`/registrations/add/${this.props.match.params.key}`} className="btn btn-primary pull-right">

@@ -5,13 +5,15 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchRegistrations } from '../actions';
 import { Spinner } from '../components/common';
+import { makeGross } from '../helpers';
 
 class RegistrationsList extends Component {
     componentWillMount() {
       this.props.fetchRegistrations();
     }
-    renderRegistrations(client){
-      return _.map(client, (registration, key) => {
+    renderRegistrations(project){
+      const { appData } = this.props;        
+      return _.map(project, (registration, key) => {
           if(registration){
             return (
           <tr key={key}>
@@ -21,7 +23,8 @@ class RegistrationsList extends Component {
             <td className="col-sm-4">{registration.shortDate}</td>
             <td className="col-sm-1">{registration.hours}:{registration.minutes}</td>
             <td className="col-sm-1">{registration.total}</td>
-            <td  className="col-sm-2">
+            <td className="col-sm-1">{makeGross(registration.total, appData.VAT)}</td>
+            <td  className="col-sm-1">
               <Label bsStyle={(registration.status === 'open' ? 'warning' : 'success')}>
                   {registration.status}
               </Label>
@@ -32,22 +35,23 @@ class RegistrationsList extends Component {
       });
     }
     renderList() {
-      const { registrations, appData } = this.props;        
-        return _.map( registrations, (client, key) => {
+      const { registrations } = this.props;        
+        return _.map( registrations, (project, key) => {
           return (
-            <Table striped bordered hover responsive key={key}>
+              <Table striped bordered hover responsive key={key}>
               <thead>
-                  <tr><th colSpan="5">{key}</th></tr>
+                  <tr><th colSpan="6">{key}</th></tr>
                     <tr style={{background: '#FFF'}}>
                       <th className="col-sm-4">name</th>
                       <th className="col-sm-4">date</th>
                       <th className="col-sm-1">time</th>
+                      <th className="col-sm-1">net</th>
                       <th className="col-sm-1">total</th>
-                      <th className="col-sm-2">status</th>
+                      <th className="col-sm-1">status</th>
                     </tr>
               </thead>
               <tbody>
-                {this.renderRegistrations(client)} 
+                {this.renderRegistrations(project)} 
               </tbody>
           </Table>
           );
@@ -55,7 +59,7 @@ class RegistrationsList extends Component {
             
     }
     render() {
-        const { appData, loading, error } = this.props;
+        const { loading, error } = this.props;
         if( loading ) {
             return <Spinner />;
         }
