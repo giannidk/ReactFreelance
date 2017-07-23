@@ -45,8 +45,8 @@ class ProjectsList extends Component {
             <Table striped bordered hover responsive>
                 <thead>
                 <tr>
-                    <th>Project Name</th>
-                    <th>Project Description</th>
+                    <th className="col-sm-4">Project Name</th>
+                    <th className="col-sm-8">Project Description</th>
                 </tr>
                 </thead>
                 <tbody>                    

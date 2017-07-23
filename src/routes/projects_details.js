@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { projectDetails } from '../actions';
 import { Spinner } from '../components/common';
+import { makeGross } from '../helpers';
 
 class ProjectsDetails extends Component {
     componentWillMount(){
@@ -14,12 +15,13 @@ class ProjectsDetails extends Component {
         }
     }
     renderRegistrations() {
-        const { project } = this.props;
+        const { appData, project } = this.props;
         return _.map(project.registrations, (registration, key) => {
             return(
                 <tr key={key}>
                     <td><Link to={`/registrations/${key}`}>{registration.name}</Link></td>
                     <td>{registration.total}</td>
+                    <td>{makeGross(registration.total, appData.VAT)}</td>
                     <td>
                       <Label bsStyle={(registration.status === 'open' ? 'warning' : 'success')}>
                           {registration.status}
@@ -30,6 +32,7 @@ class ProjectsDetails extends Component {
         });
     }
     renderTotalStatus(){
+      const { appData} = this.props;
       const { registrations } = this.props.project;
       let invoiced = 0; 
       let toInvoice = 0;   
@@ -43,7 +46,7 @@ class ProjectsDetails extends Component {
       return(
         <div>
           <div className="text-success">{`Total invoiced: ${invoiced}`}</div>
-          <div className="text-warning">{`Total to invoice: ${toInvoice}`}</div>
+          <div className="text-warning">{`Total to invoice: ${toInvoice} (${makeGross(toInvoice, appData.VAT)} gross)`}</div>
         </div>
       );
     }
@@ -64,13 +67,15 @@ class ProjectsDetails extends Component {
         return (
             <div>
                 <PageHeader>{project.projectName} </PageHeader>
+                <h4>Project description:</h4>
                 <div>{project.projectDescription}</div>
                 <hr />
                 <Table striped bordered hover responsive>
                     <thead>
                     <tr>
                         <th>Registrations for this project</th>
-                        <th>Total (net {appData.currency})</th>
+                        <th>Net ({appData.currency})</th>
+                        <th>Total ({appData.currency})</th>
                         <th>Status</th>
                     </tr>
                     </thead>
