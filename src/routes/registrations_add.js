@@ -8,26 +8,30 @@ import { connect } from 'react-redux';
 import { fetchProjects, addRegistration } from '../actions';
 import { Spinner } from '../components/common';
 
-class RegistrationsAdd extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            date: new Date(),
-        };        
-    }
+class RegistrationsAdd extends Component {    
 
+    constructor(props){
+      super(props);
+      const { appData } = this.props;
+      this.state = {
+        //date: new Date().toISOString(),
+        //dateFormat: appData.dateFormat,
+      }
+    }
     componentWillMount(){
         this.props.fetchProjects();
     }
     componentDidMount() {
       // initializing default values for the form
-      const { initialize } = this.props;
-      initialize({
+      const { initialize, appData } = this.props;
+      console.log(appData);
+       initialize({
               hours: '0',
               minutes: '15',
               project: this.props.match.params.projectID || '',
-              date: '25. July 2017'
-            });
+              date: new Date().toISOString(),
+              dateFormat: appData.dateFormat 
+            }); 
     }
 
     handlePickerChange(value) {
@@ -83,6 +87,7 @@ class RegistrationsAdd extends Component {
 
     renderDatepicker(field){
          const { meta: { touched, error } } = field;
+         //const {appData} = ownProps;
         const className = `${field.containerClass} form-group ${touched && error ? 'has-error' : ''}`;
         return (
             <div className={className}>
@@ -90,9 +95,9 @@ class RegistrationsAdd extends Component {
                     <DatePicker 
                         {...field.input}
                         showTodayButton
-                        dateFormat="DD-MM-YYYY" 
-                        value={field.value}
-                        selected={field.input.value ? field.input.value : null} 
+                        //value={field.value}
+                        //dateFormat={field.dateFormat}
+                        //selected={field.input.value ? field.input.value : null} 
                     />
                     {touched && error && <p className="control-label">{touched ? error : ''}</p>}
             </div>
@@ -106,7 +111,7 @@ class RegistrationsAdd extends Component {
     }
 
     render() {
-        const { handleSubmit, loading } = this.props;
+        const { appData, handleSubmit, loading } = this.props;
          if( loading ) {
             return <Spinner />;
         }
@@ -114,21 +119,24 @@ class RegistrationsAdd extends Component {
             <div>
                 <PageHeader>Add Registration</PageHeader>
                 <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
-                   {/*  <Field 
+                       <Field 
                         label="Date"
                         name="date"
                         containerClass="col-sm-4"
-                        id="example-datepicker"
-                        //value={this.state.date.toLocaleTimeString}
+                        value={this.state.date}
+                        dateFormat={this.state.dateFormat}
                         //onChange={this.handlePickerChange.bind(this)}
                         component={this.renderDatepicker}
-                    /> */}
-                    <Field
+                    />   
+
+                     {/* <Field
                         label="Date"
                         name="date"
                         containerClass="col-sm-4"
+                        //value={this.state.date}
+                        dateFormat="DD MM YY"
                         component={this.renderField}
-                    /> 
+                    />   */}
                      <Field
                         label="Hours"
                         name="hours"
@@ -210,15 +218,12 @@ function validate(values) {
     } 
     return errors;
 }
-function mapStateToProps({ projects }) {
+function mapStateToProps({ projects, appData }) {
     return { 
         loading: projects.loading,
         error: projects.error,
         projects: projects.list,
-        //initialValues: registrations.registrationFormInitialValues
-        initialValues: {
-          minutes: 0
-        }
+        appData
     };
 }
 

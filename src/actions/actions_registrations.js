@@ -27,7 +27,6 @@ import {
         .then(
             //success
             snapshot => {
-              console.log(snapshot.val());
               if(!snapshot.val()){
                 //return dispatch if there are no registrations
                 dispatch({
@@ -131,7 +130,7 @@ export function addRegistration(values, callbackFunction) {
 export function registrationDelete(id, projectKey, callbackFunction) {
   return (dispatch) => {
       // remove from relational table
-    database.ref(`${projectsRegsRoot}/${projectKey}`)
+    database.ref(`${projectsRegsRoot}/${projectKey}/${id}`)
     .remove()
     .then(
         success => {
