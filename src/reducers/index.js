@@ -12,7 +12,8 @@ const rootReducer = combineReducers({
         "companyAddress": "Nørre Voldgade 52, 2200 Købanhevn N",
         "companyCVR": "3811 3784",
         "VAT": "25",
-        "currency": "DKK"
+        "currency": "DKK",
+        "dateFormat": "DD-MM-YYYY" 
       }
     },
     clients: ClientsReducer,

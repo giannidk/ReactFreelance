@@ -8,33 +8,22 @@ import { connect } from 'react-redux';
 import { fetchProjects, addRegistration } from '../actions';
 import { Spinner } from '../components/common';
 
-class RegistrationsAdd extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            date: new Date(),
-        };        
-    }
+class RegistrationsAdd extends Component {    
 
     componentWillMount(){
         this.props.fetchProjects();
     }
+
     componentDidMount() {
       // initializing default values for the form
-      const { initialize } = this.props;
-      initialize({
+      const { initialize, appData } = this.props;
+      console.log(appData);
+       initialize({
               hours: '0',
               minutes: '15',
               project: this.props.match.params.projectID || '',
-              date: '25. July 2017'
-            });
-    }
-
-    handlePickerChange(value) {
-        console.log('DATE-----:', value);
-        this.setState({
-            date: value
-        });
+              date: new Date().toISOString(),              
+            }); 
     }
 
     renderProjects() {           
@@ -90,9 +79,7 @@ class RegistrationsAdd extends Component {
                     <DatePicker 
                         {...field.input}
                         showTodayButton
-                        dateFormat="DD-MM-YYYY" 
-                        value={field.value}
-                        selected={field.input.value ? field.input.value : null} 
+                        id="date-datepicker"
                     />
                     {touched && error && <p className="control-label">{touched ? error : ''}</p>}
             </div>
@@ -106,7 +93,7 @@ class RegistrationsAdd extends Component {
     }
 
     render() {
-        const { handleSubmit, loading } = this.props;
+        const { appData, handleSubmit, loading } = this.props;
          if( loading ) {
             return <Spinner />;
         }
@@ -114,21 +101,13 @@ class RegistrationsAdd extends Component {
             <div>
                 <PageHeader>Add Registration</PageHeader>
                 <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
-                   {/*  <Field 
+                       <Field 
                         label="Date"
                         name="date"
                         containerClass="col-sm-4"
-                        id="example-datepicker"
-                        //value={this.state.date.toLocaleTimeString}
-                        //onChange={this.handlePickerChange.bind(this)}
+                        dateFormat={appData.dateFormat}
                         component={this.renderDatepicker}
-                    /> */}
-                    <Field
-                        label="Date"
-                        name="date"
-                        containerClass="col-sm-4"
-                        component={this.renderField}
-                    /> 
+                    />   
                      <Field
                         label="Hours"
                         name="hours"
@@ -176,8 +155,6 @@ class RegistrationsAdd extends Component {
                         containerClass="col-sm-12"
                         component={this.renderField}
                     />
-                   
-                    
                     <div className="pull-right">
                         <button type="submit" className="btn btn-primary">Submit</button>
                         <Link to="/registrations" className="btn btn-danger" style={{marginLeft: 5}}>Cancel</Link>
@@ -205,26 +182,19 @@ function validate(values) {
     if(!values.date) {
         errors.date = "Enter the date!";
     }
-     if(!values.price) {
+      if(!values.price) {
         errors.price = "Enter value!";
-    } 
+    }  
     return errors;
 }
-function mapStateToProps({ projects }) {
+function mapStateToProps({ projects, appData }) {
     return { 
         loading: projects.loading,
         error: projects.error,
         projects: projects.list,
-        //initialValues: registrations.registrationFormInitialValues
-        initialValues: {
-          minutes: 0
-        }
+        appData
     };
 }
-
-/* InitializeFromStateForm = reduxForm({
-  form: 'initializeFromState' // a unique identifier for this form
-})(InitializeFromStateForm) */
 
 export default reduxForm({
     validate,

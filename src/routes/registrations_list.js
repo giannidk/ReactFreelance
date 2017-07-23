@@ -8,27 +8,50 @@ import { Spinner } from '../components/common';
 
 class RegistrationsList extends Component {
     componentWillMount() {
-        //console.log(this.props);
-        this.props.fetchRegistrations();
+      this.props.fetchRegistrations();
+    }
+    renderRegistrations(client){
+      return _.map(client, (registration, key) => {
+          if(registration){
+            return (
+          <tr key={key}>
+            <td className="col-sm-4">
+              <Link to={`/registrations/${key}`}> {registration.name} </Link>
+            </td>            
+            <td className="col-sm-4">{registration.shortDate}</td>
+            <td className="col-sm-1">{registration.hours}:{registration.minutes}</td>
+            <td className="col-sm-1">{registration.total}</td>
+            <td  className="col-sm-2">
+              <Label bsStyle={(registration.status === 'open' ? 'warning' : 'success')}>
+                  {registration.status}
+              </Label>
+            </td>
+          </tr>                    
+        );
+          }
+      });
     }
     renderList() {
-        const { registrations } = this.props;
-        return _.map( registrations, (reg, key) => {
-            return (
-                <tr key={key}>
-                    <td>{reg.project}</td>
-                    <td><Link to={`/registrations/${key}`}>{reg.name}</Link></td>
-                    <td>{reg.date}</td>
-                    <td>{reg.hours}:{reg.minutes}</td>
-                    <td>{reg.total}</td>
-                    <td>
-                        <Label bsStyle={(reg.status === 'open' ? 'warning' : 'success')}>
-                            {reg.status}
-                        </Label>
-                    </td>
-                </tr>
-            );
-        } ) 
+      const { registrations, appData } = this.props;        
+        return _.map( registrations, (client, key) => {
+          return (
+            <Table striped bordered hover responsive key={key}>
+              <thead>
+                  <tr><th colSpan="5">{key}</th></tr>
+                    <tr style={{background: '#FFF'}}>
+                      <th className="col-sm-4">name</th>
+                      <th className="col-sm-4">date</th>
+                      <th className="col-sm-1">time</th>
+                      <th className="col-sm-1">total</th>
+                      <th className="col-sm-2">status</th>
+                    </tr>
+              </thead>
+              <tbody>
+                {this.renderRegistrations(client)} 
+              </tbody>
+          </Table>
+          );
+        }) 
             
     }
     render() {
@@ -49,21 +72,9 @@ class RegistrationsList extends Component {
         return (
             <div>
                 <PageHeader>Registrations</PageHeader>
-                <Table striped bordered hover responsive>
-                    <thead>
-                        <tr>
-                            <th>Project</th>
-                            <th>Registration</th>
-                            <th>Date</th>
-                            <th>Time</th>
-                            <th>Total (net {appData.currency})</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {this.renderList()}
-                    </tbody>
-                </Table>
+               <div>
+                 {this.renderList()}
+               </div>
                 <hr />
                 <Link to="/registrations/add" className="btn btn-primary pull-right">Add Registration</Link>
             </div>

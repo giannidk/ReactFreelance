@@ -24,7 +24,7 @@ class ClientsDetails extends Component {
           return _.map(projects, (project, key) => {
             return(
                 <tr key={key}>
-                    <td><Link to={`/projects/${key}`}>{project}</Link></td>
+                    <td><Link to={`/projects/${key}`}>{project.projectName}</Link></td>
                 </tr>
             );
         });  

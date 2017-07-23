@@ -1,5 +1,6 @@
 import {
-	database,
+  database,
+  projectsRoot,
   registrationsRoot as regsRoot,
   projectsRegistrationsRoot as projectsRegsRoot
 } from '../firebase';
@@ -16,19 +17,47 @@ import {
 } from './types';
 
  export function fetchRegistrations() {
+   let registrations = {};
     return (dispatch) => {
         dispatch({
         type: FETCH_REGISTRATIONS,
     });
-        database.ref(regsRoot)
+        database.ref(projectsRegsRoot)
         .once('value')
         .then(
             //success
-            snap => {
+            snapshot => {
+              if(!snapshot.val()){
+                //return dispatch if there are no registrations
                 dispatch({
                     type: FETCH_REGISTRATIONS_SUCCESS,
-					payload: snap.val()
-                });
+                    payload: registrations
+                }); 
+              }else{
+                //fetch registrations details before dispatching
+              snapshot.forEach(childSnapshot => {
+                database.ref(projectsRoot).child(childSnapshot.key)
+                .once('value')
+                .then(
+                  snap => {
+                    registrations[snap.val().projectName] = childSnapshot.val();
+                    childSnapshot.forEach(regsSnapshot => {
+                      database.ref(regsRoot).child(regsSnapshot.key)
+                      .once('value')
+                      .then(
+                        snapper => {
+                          registrations[snap.val().projectName][snapper.key] = snapper.val();
+                           dispatch({
+                              type: FETCH_REGISTRATIONS_SUCCESS,
+                              payload: registrations
+                          }); 
+                        }
+                      )
+                    }) // end child snap for regs details
+                  }
+                )
+              });
+              }
             },
             error => {
                 dispatch({
@@ -39,7 +68,7 @@ import {
         )
     }
 } 
-
+ 
 export function registrationDetails(key) {
 	return (dispatch) => {
 	dispatch({
@@ -70,20 +99,19 @@ export function registrationDetails(key) {
 	};
 };
 
-
-
 export function addRegistration(values, callbackFunction) {
 	return (dispatch) => {
         const totalTime = parseInt(values.hours, 10)*60+parseInt(values.minutes, 10);
-        console.log('HOURS: ',typeof values.hours, values.hours);
-        console.log('MINUTES: ',typeof values.hours, values.minutes);
         const totalPrice = (totalTime/60)*parseFloat(values.price).toFixed(2);
-        console.log(totalTime);
 
-		database.ref(regsRoot)
+        const date = new Date(values.date);
+        values.shortDate = (`${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`);
+        values.date = null; 
+        
+
+		  database.ref(regsRoot)
 			.push({ ...values, status: 'open', total: totalPrice})
 			.then( snap => {
-                console.log(snap.getKey());
                 database.ref(projectsRegsRoot).child(values.project).child(snap.getKey())
                 .set(values.name)
                 .then(
@@ -96,15 +124,14 @@ export function addRegistration(values, callbackFunction) {
                     }
                 )				
 				callbackFunction();
-			});
+			});  
 	};
 }
-
 
 export function registrationDelete(id, projectKey, callbackFunction) {
   return (dispatch) => {
       // remove from relational table
-    database.ref(`${projectsRegsRoot}/${projectKey}`)
+    database.ref(`${projectsRegsRoot}/${projectKey}/${id}`)
     .remove()
     .then(
         success => {

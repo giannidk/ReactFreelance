@@ -10,3 +10,7 @@ table{
 hr{
   border-color: #CCC;
 }
+
+thead > tr{
+  background: #cfd8dc;
+}
