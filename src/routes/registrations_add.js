@@ -155,7 +155,7 @@ class RegistrationsAdd extends Component {
                         containerClass="col-sm-12"
                         component={this.renderField}
                     />
-                    <div className="pull-right">
+                    <div className="col-sm-12 text-right">
                         <button type="submit" className="btn btn-primary">Submit</button>
                         <Link to="/registrations" className="btn btn-danger" style={{marginLeft: 5}}>Cancel</Link>
                     </div>

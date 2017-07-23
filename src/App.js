@@ -24,16 +24,27 @@ import ProjectsDetails from './routes/projects_details';
 import ProjectsInvoice from './routes/projects_invoice';
 import InvoicesList from './routes/invoices_list';
 import InvoiceDetails from './routes/invoices_details';
+import UserLogin from './routes/user_login';
 
 
 class App extends Component {
+
+  requireAuth(nextState, replace) {
+  //if (!loggedIn()) {
+    replace({
+      pathname: '/invoices'
+    })
+  //}
+}
+
+
   render() {
   const createStoreWithMiddleware = applyMiddleware(ReduxThunk)(createStore);
     return (
       <Provider store={createStoreWithMiddleware(reducers)}>
       <BrowserRouter>
         <div className="app-container">
-            <Topnav />
+             <Topnav /> 
           <Grid >
             <Switch>
               <Route path="/dashboard" component={Dashboard} />
@@ -50,7 +61,7 @@ class App extends Component {
               <Route path="/registrations" component={RegistrationsList} />
               <Route path="/invoices/:invoiceKey" component={InvoiceDetails} />
               <Route path="/invoices" component={InvoicesList} />
-              <Route path="/" component={Dashboard} />
+              <Route path="/" component={UserLogin} />
             </Switch>
           </Grid>
         </div>

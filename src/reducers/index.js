@@ -4,6 +4,7 @@ import ClientsReducer from './reducer_clients';
 import ProjectsReducer from './reducer_projects';
 import InvoicesReducer from './reducer_invoices';
 import RegistrationsReducer from './reducer_registrations';
+import AuthReducer from './reducer_auth';
 
 const rootReducer = combineReducers({
     appData: () => {
@@ -20,7 +21,8 @@ const rootReducer = combineReducers({
     projects: ProjectsReducer,
     registrations: RegistrationsReducer,
     invoices: InvoicesReducer,
-    form: formReducer
+    form: formReducer,
+    auth: AuthReducer
 })
 
 export default rootReducer;
