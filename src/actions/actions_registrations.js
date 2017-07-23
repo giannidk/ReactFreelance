@@ -102,15 +102,16 @@ export function registrationDetails(key) {
 export function addRegistration(values, callbackFunction) {
 	return (dispatch) => {
         const totalTime = parseInt(values.hours, 10)*60+parseInt(values.minutes, 10);
-        console.log('HOURS: ',typeof values.hours, values.hours);
-        console.log('MINUTES: ',typeof values.hours, values.minutes);
         const totalPrice = (totalTime/60)*parseFloat(values.price).toFixed(2);
-        console.log(totalTime);
 
-		database.ref(regsRoot)
+        const date = new Date(values.date);
+        values.shortDate = (`${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}`);
+        values.date = null; 
+        
+
+		  database.ref(regsRoot)
 			.push({ ...values, status: 'open', total: totalPrice})
 			.then( snap => {
-                console.log(snap.getKey());
                 database.ref(projectsRegsRoot).child(values.project).child(snap.getKey())
                 .set(values.name)
                 .then(
@@ -123,7 +124,7 @@ export function addRegistration(values, callbackFunction) {
                     }
                 )				
 				callbackFunction();
-			});
+			});  
 	};
 }
 

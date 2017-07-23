@@ -10,17 +10,10 @@ import { Spinner } from '../components/common';
 
 class RegistrationsAdd extends Component {    
 
-    constructor(props){
-      super(props);
-      const { appData } = this.props;
-      this.state = {
-        //date: new Date().toISOString(),
-        //dateFormat: appData.dateFormat,
-      }
-    }
     componentWillMount(){
         this.props.fetchProjects();
     }
+
     componentDidMount() {
       // initializing default values for the form
       const { initialize, appData } = this.props;
@@ -29,16 +22,8 @@ class RegistrationsAdd extends Component {
               hours: '0',
               minutes: '15',
               project: this.props.match.params.projectID || '',
-              date: new Date().toISOString(),
-              dateFormat: appData.dateFormat 
+              date: new Date().toISOString(),              
             }); 
-    }
-
-    handlePickerChange(value) {
-        console.log('DATE-----:', value);
-        this.setState({
-            date: value
-        });
     }
 
     renderProjects() {           
@@ -87,7 +72,6 @@ class RegistrationsAdd extends Component {
 
     renderDatepicker(field){
          const { meta: { touched, error } } = field;
-         //const {appData} = ownProps;
         const className = `${field.containerClass} form-group ${touched && error ? 'has-error' : ''}`;
         return (
             <div className={className}>
@@ -95,9 +79,7 @@ class RegistrationsAdd extends Component {
                     <DatePicker 
                         {...field.input}
                         showTodayButton
-                        //value={field.value}
-                        //dateFormat={field.dateFormat}
-                        //selected={field.input.value ? field.input.value : null} 
+                        id="date-datepicker"
                     />
                     {touched && error && <p className="control-label">{touched ? error : ''}</p>}
             </div>
@@ -123,20 +105,9 @@ class RegistrationsAdd extends Component {
                         label="Date"
                         name="date"
                         containerClass="col-sm-4"
-                        value={this.state.date}
-                        dateFormat={this.state.dateFormat}
-                        //onChange={this.handlePickerChange.bind(this)}
+                        dateFormat={appData.dateFormat}
                         component={this.renderDatepicker}
                     />   
-
-                     {/* <Field
-                        label="Date"
-                        name="date"
-                        containerClass="col-sm-4"
-                        //value={this.state.date}
-                        dateFormat="DD MM YY"
-                        component={this.renderField}
-                    />   */}
                      <Field
                         label="Hours"
                         name="hours"
@@ -184,8 +155,6 @@ class RegistrationsAdd extends Component {
                         containerClass="col-sm-12"
                         component={this.renderField}
                     />
-                   
-                    
                     <div className="pull-right">
                         <button type="submit" className="btn btn-primary">Submit</button>
                         <Link to="/registrations" className="btn btn-danger" style={{marginLeft: 5}}>Cancel</Link>
@@ -213,9 +182,9 @@ function validate(values) {
     if(!values.date) {
         errors.date = "Enter the date!";
     }
-     if(!values.price) {
+      if(!values.price) {
         errors.price = "Enter value!";
-    } 
+    }  
     return errors;
 }
 function mapStateToProps({ projects, appData }) {
@@ -226,10 +195,6 @@ function mapStateToProps({ projects, appData }) {
         appData
     };
 }
-
-/* InitializeFromStateForm = reduxForm({
-  form: 'initializeFromState' // a unique identifier for this form
-})(InitializeFromStateForm) */
 
 export default reduxForm({
     validate,

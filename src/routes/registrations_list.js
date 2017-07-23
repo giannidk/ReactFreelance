@@ -18,7 +18,7 @@ class RegistrationsList extends Component {
             <td className="col-sm-4">
               <Link to={`/registrations/${key}`}> {registration.name} </Link>
             </td>            
-            <td className="col-sm-4">{registration.date}</td>
+            <td className="col-sm-4">{registration.shortDate}</td>
             <td className="col-sm-1">{registration.hours}:{registration.minutes}</td>
             <td className="col-sm-1">{registration.total}</td>
             <td  className="col-sm-2">

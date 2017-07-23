@@ -57,7 +57,7 @@ class RegistrationsDetails extends Component {
                         </tr>
                         <tr>
                             <td>Date:</td>
-                            <td>{registration.date}</td>
+                            <td>{registration.shortDate}</td>
                         </tr>
                         <tr>
                             <td>Time:</td>
