@@ -26,19 +26,21 @@ export const loginUser = ({ userEmail, userPassword }, callbackFunction) => {
                   type: LOGIN_USER_FAIL,
                   error: 'Authentication failed!'
                 });
-              callbackFunction('/');
+              //callbackFunction('/');
             }); 
     };
 };
 
-export const logoutUser = () => {
+export const logoutUser = (callbackFunction) => {
         console.log('CICCIO');
     return (dispatch) => {
         console.log('user');
+        firebase.auth().signOut();
         dispatch({
             type: LOGOUT_USER,
             payload: {}
         });
+          callbackFunction('/dashboard');
     };
 };
 

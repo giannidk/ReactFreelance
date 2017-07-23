@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Panel, Alert } from 'react-bootstrap';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
-import { loginUser } from '../actions';
+import { loginUser, logoutUser } from '../actions';
 
 class UserLogin extends Component {
 
@@ -16,6 +16,16 @@ class UserLogin extends Component {
     storageBucket: "",
     messagingSenderId: "1020252082009" 
     };
+
+    const user = firebase.auth().currentUser;
+
+    if (user) {
+      // User is signed in.
+      console.log('USER LOGGED')
+    } else {
+      console.log('NO USER')
+      // No user is signed in.
+    }
   }
   
   renderField(field) {
@@ -40,6 +50,12 @@ class UserLogin extends Component {
     }
     onSubmit({userEmail, userPassword}) {
         this.props.loginUser({userEmail, userPassword}, (redirectRoute) => {
+            this.props.history.push(redirectRoute);
+        });
+    }
+
+    onLogoutClick(){
+      this.props.logoutUser((redirectRoute) => {
             this.props.history.push(redirectRoute);
         });
     }
@@ -90,7 +106,13 @@ class UserLogin extends Component {
       </div>
     );
   }// if !currentUser
-  return(<h2>{currentUser.uid}</h2>);
+  else {
+    return(
+      <div>
+        <h2>{currentUser.uid}</h2>
+        <button onClick={this.onLogoutClick.bind(this)} >Logout </button>
+      </div>
+    )};
   }
 }
 
@@ -127,5 +149,5 @@ export default reduxForm({
     validate,
     form: 'LoginForm'
 })(
-    connect(mapStateToProps, { loginUser })(UserLogin)
+    connect(mapStateToProps, { loginUser, logoutUser })(UserLogin)
 );

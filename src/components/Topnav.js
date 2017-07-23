@@ -8,9 +8,12 @@ import {
   NavItem,
  } from 'react-bootstrap';
 import { connect } from 'react-redux';  
-import { logoutUser } from '../../actions';
+import { logoutUser } from '../actions';
 
 class Topnav extends Component{
+  componentWillMount(){
+    
+  }
   renderUser(){
       const { currentUser } = firebase.auth();
       console.log(this.props);
@@ -65,4 +68,3 @@ class Topnav extends Component{
 
 
 export default connect(null, {logoutUser})(Topnav) ;
-export { Topnav };

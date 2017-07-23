@@ -8,9 +8,7 @@ import ReduxThunk from 'redux-thunk';
 import reducers from './reducers';
 import './css/App.css';
 import './css/spinner.css';
-import { 
-  Topnav
-} from './components/common';
+import Topnav from './components/Topnav';
 import Dashboard from './routes/dashboard';
 import ClientsList from './routes/clients_list';
 import ClientsAdd from './routes/clients_add';
@@ -29,20 +27,11 @@ import UserLogin from './routes/user_login';
 
 class App extends Component {
 
-  requireAuth(nextState, replace) {
-  //if (!loggedIn()) {
-    replace({
-      pathname: '/invoices'
-    })
-  //}
-}
-
-
   render() {
   const createStoreWithMiddleware = applyMiddleware(ReduxThunk)(createStore);
     return (
       <Provider store={createStoreWithMiddleware(reducers)}>
-      <BrowserRouter>
+      <BrowserRouter basename="demos/react-freelance">
         <div className="app-container">
              <Topnav /> 
           <Grid >
