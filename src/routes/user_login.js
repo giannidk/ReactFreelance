@@ -6,26 +6,41 @@ import { connect } from 'react-redux';
 import { emailChanged, passwordChanged,loginUser, logoutUser } from '../actions';
 
 class UserLogin extends Component {
+   componentDidMount() {
+     firebase.auth().onAuthStateChanged(user => {
+        if (user) {
+          // User is signed in.
+          console.log(user);
+        }
+      });
+      // initializing default values for the form
+      const { initialize, userEmail, userPassword } = this.props;
+       initialize({
+          userEmail: userEmail,
+          userPassword: userPassword                      
+        }); 
+    }
 
 onEmailChange(text) {
-        console.log(text.target.value);
-        this.props.emailChanged(text.target.value);
+    //console.log(text.target.value);
+    this.props.emailChanged(text.target.value);
 }
 onPasswordChange(text) {
-        console.log(text.target.value);
+      //console.log(text.target.value);
     this.props.passwordChanged(text.target.value);
 }
 
+
 onSubmit() {
     const { userEmail, userPassword } = this.props;
-    this.props.loginUser({ userEmail, userPassword });
+    this.props.loginUser({ userEmail, userPassword }); //  () => {this.props.history.push('/dashboard');}
 }
 
- onLogoutClick(){
-    this.props.logoutUser((redirectRoute) => {
-        this.props.history.push(redirectRoute);
-    });
-} 
+onLogoutClick(){
+  console.log('logging out...');
+  this.props.logoutUser();
+}
+
 
 renderErrorAlert(){
     const { error } = this.props;
@@ -39,7 +54,6 @@ renderErrorAlert(){
         );
     }
 }
-  
   
 renderField(field) {
     const { meta: { touched, error } } = field;
@@ -59,12 +73,8 @@ renderField(field) {
     );
 }
   render() {
-    const { handleSubmit } = this.props;
+    const { handleSubmit, userEmail, userPassword  } = this.props;
     const { currentUser } = firebase.auth();
-    //if( !currentUser ){
-         if(currentUser !== null){
-            <h2>User is logged</h2>
-        }
     return (
       <div className="loginOuterContainer">
         <div className="loginInnerContainer col-xs-12 col-sm-8 col-md-6 col-lg-4">
@@ -76,7 +86,7 @@ renderField(field) {
               label="Email"
               name="userEmail"
               placeholder="email"
-              value={this.props.userEmail}
+              value={userEmail}
               onChange={this.onEmailChange.bind(this)}
               component={this.renderField}
           />
@@ -85,12 +95,13 @@ renderField(field) {
               name="userPassword"
               placeholder="password"
               type="password"
-              value={this.props.userPassword}
+              value={userPassword}
               onChange={this.onPasswordChange.bind(this)}
               component={this.renderField}
           />
           <div className="pull-right">
-              <button type="submit" className="btn btn-primary">Login</button>
+              <button type="submit" className="btn btn-primary">Log in</button>
+              <button type="button" className="btn btn-warning" style={{marginLeft: 5}} onClick={this.onLogoutClick.bind(this)}>Log out</button>
               <button type="reset" className="btn btn-danger" style={{marginLeft: 5}} onClick={() => {this.props.reset()}}>Cancel</button>
           </div>
           </form>
@@ -98,14 +109,6 @@ renderField(field) {
       </div>
       </div>
     );
-  //}// if !currentUser
-  /* else {
-    return(
-      <div>
-        <h2>{currentUser.uid}</h2>
-         <button onClick={this.onLogoutClick.bind(this)} >Logout </button> 
-      </div>
-    )}; */
   }
 }
 
@@ -132,12 +135,13 @@ function validate(values) {
 
 const mapStateToProps = ({ auth }) => {
     const { userEmail, userPassword, error, loading } = auth;
+  console.log(userEmail, userPassword);
     return { userEmail, userPassword, error, loading };
 };
 
 export default reduxForm({
     validate,
-    form: 'LoginForm'
+    form: 'loginForm'
 })(
-    connect(mapStateToProps, { emailChanged, passwordChanged,loginUser, logoutUser })(UserLogin)
+    connect(mapStateToProps, { emailChanged, passwordChanged, loginUser, logoutUser })(UserLogin)
 );

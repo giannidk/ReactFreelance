@@ -17,13 +17,12 @@ class RegistrationsAdd extends Component {
     componentDidMount() {
       // initializing default values for the form
       const { initialize, appData } = this.props;
-      console.log(appData);
        initialize({
-              hours: '0',
-              minutes: '15',
-              project: this.props.match.params.projectID || '',
-              date: new Date().toISOString(),              
-            }); 
+          hours: '0',
+          minutes: '15',
+          project: this.props.match.params.projectID || '',
+          date: new Date().toISOString(),              
+        }); 
     }
 
     renderProjects() {           

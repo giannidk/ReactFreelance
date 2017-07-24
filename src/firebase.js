@@ -19,6 +19,8 @@ const registrationsRoot = `${baseRoot}/registrations`;
 const projectsRegistrationsRoot = `${baseRoot}/projectsRegistrations`;
 const invoicesRoot = `${baseRoot}/invoices`;
 const projectsInvoicesRoot = `${baseRoot}/projectsInvoices`;
+
+const auth = firebase.auth();
 export {
   database, 
   baseRoot,
@@ -28,5 +30,6 @@ export {
   registrationsRoot,
   projectsRegistrationsRoot,
   invoicesRoot,
-  projectsInvoicesRoot
+  projectsInvoicesRoot,
+  auth
 };

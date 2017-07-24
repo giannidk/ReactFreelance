@@ -1,4 +1,5 @@
-import firebase from 'firebase';
+import {reset, change } from 'redux-form';
+import { auth } from '../firebase';
 import { 
     EMAIL_CHANGED,
     PASSWORD_CHANGED,
@@ -23,6 +24,69 @@ export const passwordChanged = (text) => {
     };
 };
 
+export const loginUser = ({ userEmail, userPassword }, callback) => {
+  return(dispatch) => {
+    console.log(userEmail, userPassword);
+    dispatch({ type: LOGIN_USER });
+    auth.signInWithEmailAndPassword(userEmail, userPassword)
+    .then(
+      user => { 
+        console.log( user );
+        user => {
+           loginUserSuccess(dispatch, user);
+        }
+      },
+      error => { 
+        console.log( error.message );        
+        loginUserFail(dispatch, error.message);
+      }
+    )
+      //redirectFunction(callback);
+  }
+}
+
+
+export const logoutUser = () => {
+    return (dispatch) => {
+      auth.signOut();
+        dispatch({
+            type: LOGOUT_USER,
+            payload: {}        
+        });
+    };
+};
+
+
+
+
+const loginUserSuccess = (dispatch, user) => {    
+    dispatch({
+        type: LOGIN_USER_SUCCESS,
+        payload: user
+    });
+};
+
+const loginUserFail = (dispatch, error) => {
+    //dispatch(reset('loginForm', 'userEmail'), { 
+    //dispatch(change('loginForm', 'userPassword', ''), { 
+    dispatch({ 
+        type: LOGIN_USER_FAIL,
+        error: error 
+    });
+};
+
+
+const redirectFunction = (callback) => {
+  auth.onAuthStateChanged( user => {
+        if (user) {
+          return (callback('/dashboard'));
+        }
+          return callback('/');
+      });
+}
+
+
+/* 
 export const loginUser = ({ userEmail, userPassword }) => {
     return (dispatch) => {
         dispatch({ type: LOGIN_USER });
@@ -34,18 +98,8 @@ export const loginUser = ({ userEmail, userPassword }) => {
     };
 };
 
-const loginUserFail = (dispatch) => {
-    dispatch({ 
-        type: LOGIN_USER_FAIL,
-        error: 'Authentication failed!' 
-    });
-};
-const loginUserSuccess = (dispatch, user) => {
-    dispatch({
-        type: LOGIN_USER_SUCCESS,
-        payload: user
-    });
-};
+
+
 
 export const logoutUser = () => {
     return (dispatch) => {
@@ -54,51 +108,5 @@ export const logoutUser = () => {
             payload: {}        
         });
     };
-};
-
-
-/* 
-export const loginUser = ({ userEmail, userPassword }, callbackFunction) => {
-    return (dispatch) => {
-      console.log(userEmail, userPassword);
-         dispatch({ type: LOGIN_USER });
-        firebase.auth().signInWithEmailAndPassword(userEmail, userPassword)
-            .then(              
-              user => {
-              loginUserSuccess(dispatch, user);
-              callbackFunction('/dashboard');
-              console.log('OK');
-              }
-            )
-            .catch((error) => {
-                console.log(error);
-                dispatch({ 
-                  type: LOGIN_USER_FAIL,
-                  error: 'Authentication failed!'
-                });
-              //callbackFunction('/');
-            }); 
-    };
-};
-
-export const logoutUser = (callbackFunction) => {
-        console.log('CICCIO');
-    return (dispatch) => {
-        console.log('user');
-        firebase.auth().signOut();
-        dispatch({
-            type: LOGOUT_USER,
-            payload: {}
-        });
-          callbackFunction('/dashboard');
-    };
-};
-
-// HELPER FUNCTIONS
-const loginUserSuccess = (dispatch, user) => {
-    dispatch({
-        type: LOGIN_USER_SUCCESS,
-        payload: user
-    });
 };
  */
