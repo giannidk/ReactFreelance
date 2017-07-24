@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import ReduxThunk from 'redux-thunk';
 
+import { auth } from './firebase';
 import reducers from './reducers';
 import './css/App.css';
 import './css/spinner.css';
@@ -26,6 +27,8 @@ import UserLogin from './routes/user_login';
 
 
 class App extends Component {
+  onEnter(){
+  }
 
   render() {
   const createStoreWithMiddleware = applyMiddleware(ReduxThunk)(createStore);
@@ -36,7 +39,7 @@ class App extends Component {
         <div className="app-container">
              <Topnav /> 
           <Grid >
-            <Switch>
+            <Switch onEnter={ this.onEnter() }>
               <Route path="/dashboard" component={Dashboard} />
               <Route path="/clients/add" component={ClientsAdd} />
               <Route path="/clients/:key" component={ClientsDetails} />
