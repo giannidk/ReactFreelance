@@ -8,7 +8,7 @@ import ReduxThunk from 'redux-thunk';
 import reducers from './reducers';
 import './css/App.css';
 import './css/spinner.css';
-import Topnav from './components/Topnav';
+import { Topnav } from './components/common';
 import Dashboard from './routes/dashboard';
 import ClientsList from './routes/clients_list';
 import ClientsAdd from './routes/clients_add';

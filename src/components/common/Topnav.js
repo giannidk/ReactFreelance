@@ -1,26 +1,18 @@
-import firebase from 'firebase';
 import React, { Component } from 'react';
 import { LinkContainer } from 'react-router-bootstrap';
-import { Link } from 'react-router-dom';
 import { 
   Navbar, 
   Nav, 
   NavItem,
  } from 'react-bootstrap';
-import { connect } from 'react-redux';  
-import { logoutUser } from '../actions';
 
 class Topnav extends Component{
-  componentWillMount(){
-    //console.log(this.props.auth)
-  }
-  
     render() {
         return (
             <Navbar inverse collapseOnSelect fixedTop>
               <Navbar.Header>
                 <Navbar.Brand>
-                  <Link to="/">React Freelance</Link>                  
+                  <a href="/">React Freelance</a>
                 </Navbar.Brand>
                 <Navbar.Toggle />
               </Navbar.Header>
@@ -46,19 +38,14 @@ class Topnav extends Component{
                     <NavItem>Invoices</NavItem>
                   </LinkContainer>
                 </Nav>
-                {/* <Nav pullRight>                  
-                  <LinkContainer to="/dashboard">
-                    <NavItem>Logout</NavItem>
-                  </LinkContainer>
-                </Nav> */}
+                <Nav pullRight>
+                  {/* <NavItem>Settings</NavItem> */}
+                  {/* <NavItem>Log out (admin)</NavItem> */}
+                </Nav>
               </Navbar.Collapse>
             </Navbar>
         )
     }
 }
-const mapStateToProps = ({ auth }) => {
-    const { userEmail, userPassword, error, loading } = auth;
-    return { userEmail, userPassword, error, loading };
-};
 
-export default connect(mapStateToProps, {logoutUser})(Topnav) ;
+export { Topnav };

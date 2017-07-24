@@ -61,7 +61,10 @@ renderField(field) {
   render() {
     const { handleSubmit } = this.props;
     const { currentUser } = firebase.auth();
-    if( !currentUser ){
+    //if( !currentUser ){
+         if(currentUser !== null){
+            <h2>User is logged</h2>
+        }
     return (
       <div className="loginOuterContainer">
         <div className="loginInnerContainer col-xs-12 col-sm-8 col-md-6 col-lg-4">
@@ -73,6 +76,7 @@ renderField(field) {
               label="Email"
               name="userEmail"
               placeholder="email"
+              value={this.props.userEmail}
               onChange={this.onEmailChange.bind(this)}
               component={this.renderField}
           />
@@ -81,6 +85,7 @@ renderField(field) {
               name="userPassword"
               placeholder="password"
               type="password"
+              value={this.props.userPassword}
               onChange={this.onPasswordChange.bind(this)}
               component={this.renderField}
           />
@@ -93,7 +98,7 @@ renderField(field) {
       </div>
       </div>
     );
-  }// if !currentUser
+  //}// if !currentUser
   /* else {
     return(
       <div>
