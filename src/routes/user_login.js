@@ -3,75 +3,61 @@ import React, { Component } from 'react';
 import { Panel, Alert } from 'react-bootstrap';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
-import { loginUser, logoutUser } from '../actions';
+import { emailChanged, passwordChanged,loginUser, logoutUser } from '../actions';
 
 class UserLogin extends Component {
 
-  componentWillMount(){
-    var config = {
-    apiKey: "AIzaSyBRYMDh-hJEYpWI1mg_2P36bvjT3n7jhuo",
-    authDomain: "reactfreelance.firebaseapp.com",
-    databaseURL: "https://reactfreelance.firebaseio.com",
-    projectId: "reactfreelance",
-    storageBucket: "",
-    messagingSenderId: "1020252082009" 
-    };
+onEmailChange(text) {
+        console.log(text.target.value);
+        this.props.emailChanged(text.target.value);
+}
+onPasswordChange(text) {
+        console.log(text.target.value);
+    this.props.passwordChanged(text.target.value);
+}
 
-    const user = firebase.auth().currentUser;
+onSubmit() {
+    const { userEmail, userPassword } = this.props;
+    this.props.loginUser({ userEmail, userPassword });
+}
 
-    if (user) {
-      // User is signed in.
-      console.log('USER LOGGED')
-    } else {
-      console.log('NO USER')
-      // No user is signed in.
-    }
-  }
-  
-  renderField(field) {
-        const { meta: { touched, error } } = field;
-        const className = `form-group ${touched && error ? 'has-error' : ''}`;
+ onLogoutClick(){
+    this.props.logoutUser((redirectRoute) => {
+        this.props.history.push(redirectRoute);
+    });
+} 
+
+renderErrorAlert(){
+    const { error } = this.props;
+    if( error ) {
         return (
-            <div className={className}>
-                <label>{field.label}</label>
-                <input
-                    type={ field.type || 'text'}
-                    className="form-control"
-                    placeholder={field.placeholder}
-                    ref={field.ref}
-                    {...field.input}
-                />
-                <p className="control-label">{touched ? error : ''}</p>
+            <div>
+                <Alert bsStyle="danger">
+                    <p>{error}</p>           
+                </Alert>
             </div>
         );
     }
-    resetForm(){
-      this.props.reset()
-    }
-    onSubmit({userEmail, userPassword}) {
-        this.props.loginUser({userEmail, userPassword}, (redirectRoute) => {
-            this.props.history.push(redirectRoute);
-        });
-    }
-
-    onLogoutClick(){
-      this.props.logoutUser((redirectRoute) => {
-            this.props.history.push(redirectRoute);
-        });
-    }
-
-  renderErrorAlert(){
-    const { error } = this.props;
-    if( error ) {
-            return (
-                <div>
-                    <Alert bsStyle="danger">
-                        <p>{error}</p>           
-                    </Alert>
-                </div>
-            );
-        }
-  }
+}
+  
+  
+renderField(field) {
+    const { meta: { touched, error } } = field;
+    const className = `form-group ${touched && error ? 'has-error' : ''}`;
+    return (
+        <div className={className}>
+            <label>{field.label}</label>
+            <input
+                type={ field.type || 'text'}
+                className="form-control"
+                placeholder={field.placeholder}
+                ref={field.ref}
+                {...field.input}
+            />
+            <p className="control-label">{touched ? error : ''}</p>
+        </div>
+    );
+}
   render() {
     const { handleSubmit } = this.props;
     const { currentUser } = firebase.auth();
@@ -87,6 +73,7 @@ class UserLogin extends Component {
               label="Email"
               name="userEmail"
               placeholder="email"
+              onChange={this.onEmailChange.bind(this)}
               component={this.renderField}
           />
           <Field
@@ -94,11 +81,12 @@ class UserLogin extends Component {
               name="userPassword"
               placeholder="password"
               type="password"
+              onChange={this.onPasswordChange.bind(this)}
               component={this.renderField}
           />
           <div className="pull-right">
               <button type="submit" className="btn btn-primary">Login</button>
-              <button type="reset" className="btn btn-danger" style={{marginLeft: 5}} onClick={this.resetForm.bind(this)}>Cancel</button>
+              <button type="reset" className="btn btn-danger" style={{marginLeft: 5}} onClick={() => {this.props.reset()}}>Cancel</button>
           </div>
           </form>
         </Panel>
@@ -106,13 +94,13 @@ class UserLogin extends Component {
       </div>
     );
   }// if !currentUser
-  else {
+  /* else {
     return(
       <div>
         <h2>{currentUser.uid}</h2>
-        <button onClick={this.onLogoutClick.bind(this)} >Logout </button>
+         <button onClick={this.onLogoutClick.bind(this)} >Logout </button> 
       </div>
-    )};
+    )}; */
   }
 }
 
@@ -137,17 +125,14 @@ function validate(values) {
     return errors;
 }
 
-function mapStateToProps({ auth, appData }) {
-    return { 
-        loading: auth.loading,
-        error: auth.error,
-        appData
-    };
-}
+const mapStateToProps = ({ auth }) => {
+    const { userEmail, userPassword, error, loading } = auth;
+    return { userEmail, userPassword, error, loading };
+};
 
 export default reduxForm({
     validate,
     form: 'LoginForm'
 })(
-    connect(mapStateToProps, { loginUser, logoutUser })(UserLogin)
+    connect(mapStateToProps, { emailChanged, passwordChanged,loginUser, logoutUser })(UserLogin)
 );

@@ -12,20 +12,9 @@ import { logoutUser } from '../actions';
 
 class Topnav extends Component{
   componentWillMount(){
-    
+    //console.log(this.props.auth)
   }
-  renderUser(){
-      const { currentUser } = firebase.auth();
-      console.log(this.props);
-      if(currentUser){
-        return (<NavItem >Log out {currentUser.uid}</NavItem>);
-      }
-      return (
-          <LinkContainer to="/">
-            <NavItem>Login</NavItem>
-          </LinkContainer>
-      );
-  }
+  
     render() {
         return (
             <Navbar inverse collapseOnSelect fixedTop>
@@ -57,14 +46,19 @@ class Topnav extends Component{
                     <NavItem>Invoices</NavItem>
                   </LinkContainer>
                 </Nav>
-                <Nav pullRight>                  
-                   {this.renderUser()} 
-                </Nav>
+                {/* <Nav pullRight>                  
+                  <LinkContainer to="/dashboard">
+                    <NavItem>Logout</NavItem>
+                  </LinkContainer>
+                </Nav> */}
               </Navbar.Collapse>
             </Navbar>
         )
     }
 }
+const mapStateToProps = ({ auth }) => {
+    const { userEmail, userPassword, error, loading } = auth;
+    return { userEmail, userPassword, error, loading };
+};
 
-
-export default connect(null, {logoutUser})(Topnav) ;
+export default connect(mapStateToProps, {logoutUser})(Topnav) ;

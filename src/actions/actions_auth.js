@@ -1,13 +1,63 @@
 import firebase from 'firebase';
 import { 
+    EMAIL_CHANGED,
+    PASSWORD_CHANGED,
+    LOGIN_USER,
     LOGIN_USER_SUCCESS,
     LOGIN_USER_FAIL,
-    LOGIN_USER,
     LOGOUT_USER
 } from './types';
 
 
+export const emailChanged = (text) => {
+    return {
+        type: EMAIL_CHANGED,
+        payload: text
+    };
+};
 
+export const passwordChanged = (text) => {
+    return {
+        type: PASSWORD_CHANGED,
+        payload: text
+    };
+};
+
+export const loginUser = ({ userEmail, userPassword }) => {
+    return (dispatch) => {
+        dispatch({ type: LOGIN_USER });
+        firebase.auth().signInWithEmailAndPassword(userEmail, userPassword)
+            .then(user => loginUserSuccess(dispatch, user))
+            .catch((error) => {
+                loginUserFail(dispatch);
+            });
+    };
+};
+
+const loginUserFail = (dispatch) => {
+    dispatch({ 
+        type: LOGIN_USER_FAIL,
+        error: 'Authentication failed!' 
+    });
+};
+const loginUserSuccess = (dispatch, user) => {
+    dispatch({
+        type: LOGIN_USER_SUCCESS,
+        payload: user
+    });
+};
+
+export const logoutUser = () => {
+    return (dispatch) => {
+        dispatch({
+            type: LOGOUT_USER,
+            payload: {}        
+        });
+    };
+};
+
+
+/* 
 export const loginUser = ({ userEmail, userPassword }, callbackFunction) => {
     return (dispatch) => {
       console.log(userEmail, userPassword);
@@ -51,3 +101,4 @@ const loginUserSuccess = (dispatch, user) => {
         payload: user
     });
 };
+ */
