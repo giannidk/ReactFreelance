@@ -21,8 +21,8 @@ const rootReducer = combineReducers({
     projects: ProjectsReducer,
     registrations: RegistrationsReducer,
     invoices: InvoicesReducer,
-    form: formReducer,
-    auth: AuthReducer
+    auth: AuthReducer,
+    form: formReducer
 })
 
 export default rootReducer;

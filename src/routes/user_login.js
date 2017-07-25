@@ -10,7 +10,7 @@ class UserLogin extends Component {
      firebase.auth().onAuthStateChanged(user => {
         if (user) {
           // User is signed in.
-          console.log(user);
+          //console.log(user);
         }
       });
       // initializing default values for the form
@@ -33,11 +33,13 @@ onPasswordChange(text) {
 
 onSubmit() {
     const { userEmail, userPassword } = this.props;
-    this.props.loginUser({ userEmail, userPassword }); //  () => {this.props.history.push('/dashboard');}
+    this.props.loginUser({ userEmail, userPassword }, () => {
+      this.props.history.push('/dashboard');
+    });
 }
 
 onLogoutClick(){
-  console.log('logging out...');
+  //console.log('logging out...');
   this.props.logoutUser();
 }
 
@@ -81,7 +83,7 @@ renderField(field) {
           <h3>Login</h3>
         <Panel>
           {this.renderErrorAlert()}
-          <form name="loginForm" onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+          <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
           <Field
               label="Email"
               name="userEmail"
@@ -135,7 +137,6 @@ function validate(values) {
 
 const mapStateToProps = ({ auth }) => {
     const { userEmail, userPassword, error, loading } = auth;
-  console.log(userEmail, userPassword);
     return { userEmail, userPassword, error, loading };
 };
 

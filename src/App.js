@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+//import { BrowserRouter } from 'react-router-dom';
 import { Grid } from 'react-bootstrap';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
@@ -10,6 +11,7 @@ import reducers from './reducers';
 import './css/App.css';
 import './css/spinner.css';
 import { Topnav } from './components/common';
+//import Routes from './routes';
 import Dashboard from './routes/dashboard';
 import ClientsList from './routes/clients_list';
 import ClientsAdd from './routes/clients_add';
@@ -23,12 +25,20 @@ import ProjectsDetails from './routes/projects_details';
 import ProjectsInvoice from './routes/projects_invoice';
 import InvoicesList from './routes/invoices_list';
 import InvoiceDetails from './routes/invoices_details';
-import UserLogin from './routes/user_login';
+import UserLogin from './routes/user_login'; 
 
 
 class App extends Component {
-  onEnter(){
-  }
+  
+  requireAuth = () => {
+    if(!auth.currentUser){
+      return (<Redirect exact to="/" />); 
+    }
+    return (<Dashboard />); 
+  } 
+
+
+  
 
   render() {
   const createStoreWithMiddleware = applyMiddleware(ReduxThunk)(createStore);
@@ -39,8 +49,8 @@ class App extends Component {
         <div className="app-container">
              <Topnav /> 
           <Grid >
-            <Switch onEnter={ this.onEnter() }>
-              <Route path="/dashboard" component={Dashboard} />
+             <Switch>
+              <Route path="/dashboard" render={this.requireAuth.bind(this)} /> 
               <Route path="/clients/add" component={ClientsAdd} />
               <Route path="/clients/:key" component={ClientsDetails} />
               <Route path="/clients" component={ClientsList} />

@@ -8,23 +8,23 @@ import {
  } from 'react-bootstrap';
 
 class Topnav extends Component{  
-  constructor(props){
+  /* constructor(props){
     super(props);
     this.state = {
       userID: ''
     }      
-  }
+  } */
   componentWillMount(){
-    auth.onAuthStateChanged(user => {
+    /* auth.onAuthStateChanged(user => {
         if (user) {
           // User is signed in.
           const userID = auth.currentUser.email;
-          console.log(userID);
+          //console.log(userID);
           this.setState({userID});
         }else{
           this.setState({userID: null});
         }
-      });
+      }); */
   }
     render() {
         return (
@@ -59,7 +59,7 @@ class Topnav extends Component{
                 </Nav>
                 <Nav pullRight>
                   {/* <NavItem>Settings</NavItem> */}
-                   <NavItem>{this.state.userID}</NavItem> 
+                   <NavItem>{/* {this.state.userID} */}</NavItem> 
                 </Nav>
               </Navbar.Collapse>
             </Navbar>

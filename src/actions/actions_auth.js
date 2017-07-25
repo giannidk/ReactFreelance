@@ -1,4 +1,3 @@
-import {reset, change } from 'redux-form';
 import { auth } from '../firebase';
 import { 
     EMAIL_CHANGED,
@@ -31,17 +30,14 @@ export const loginUser = ({ userEmail, userPassword }, callback) => {
     auth.signInWithEmailAndPassword(userEmail, userPassword)
     .then(
       user => { 
-        console.log( user );
-        user => {
-           loginUserSuccess(dispatch, user);
-        }
+        loginUserSuccess(dispatch, user);
       },
       error => { 
         console.log( error.message );        
         loginUserFail(dispatch, error.message);
       }
     )
-      //redirectFunction(callback);
+      redirectFunction(callback);
   }
 }
 
@@ -59,7 +55,8 @@ export const logoutUser = () => {
 
 
 
-const loginUserSuccess = (dispatch, user) => {    
+const loginUserSuccess = (dispatch, user) => {   
+  console.log(user); 
     dispatch({
         type: LOGIN_USER_SUCCESS,
         payload: user
